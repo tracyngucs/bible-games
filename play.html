@@ -15,85 +15,133 @@ height:100vh;
 overflow:hidden;
 }
 
+/* APP WRAP (more breathing room at bottom) */
 #app {
-max-width:500px;
+width:100%;
+max-width:850px;
 margin:auto;
 height:100vh;
 display:flex;
 flex-direction:column;
-padding:20px;
+padding:clamp(8px, 1.5vw, 16px);
+box-sizing:border-box;
 }
 
+/* SCREENS */
 .screen { display:none; flex-direction:column; height:100%; }
 .show { display:flex; }
 
-h1 { text-align:center; margin-top:40px; }
+/* TITLE */
+h1 {
+text-align:center;
+margin-top:clamp(8px, 2vh, 20px);
+font-size:clamp(18px, 2.5vw, 28px);
+}
 
+/* CARD */
 .card {
 background:white;
 color:black;
-padding:25px;
-border-radius:20px;
-margin-top:20px;
+padding:clamp(10px, 1.5vw, 18px);
+border-radius:18px;
+margin-top:12px;
 text-align:center;
 }
 
+/* BUTTON BASE (SHRUNK) */
 button {
-padding:18px;
+padding:clamp(10px, 1.2vw, 14px);
 border:none;
-border-radius:15px;
-font-size:20px;
-margin-top:15px;
+border-radius:12px;
+font-size:clamp(12px, 1.8vw, 16px);
+margin-top:10px;
 font-weight:bold;
 }
 
+/* COLORS */
 .primary { background:#00c853; color:white; }
 .secondary { background:#ffca28; }
 .blue { background:#2196f3; color:white; }
 .red { background:#e53935; color:white; }
 
+/* INFO BAR (SHRUNK) */
 .info {
 display:flex;
 justify-content:space-between;
-font-size:28px;
-margin-top:10px;
+font-size:clamp(14px, 2.2vw, 20px);
+margin-top:6px;
 }
 
+/* MAIN EMOJI (SHRUNK) */
 #emoji {
 flex:1;
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:80px;
+font-size:clamp(36px, 8vw, 64px);
 text-align:center;
 }
 
+/* CLUE */
 #clue {
 text-align:center;
-font-size:22px;
-margin-top:10px;
+font-size:clamp(14px, 2vw, 18px);
+margin-top:6px;
 opacity:0.95;
 white-space:pre-line;
+min-height:24px;
 }
 
+/* FOOTER BUTTON AREA (KEY FIX) */
 .footer {
 display:flex;
-gap:10px;
-margin-bottom:10px;
+gap:8px;
+margin-top:auto;        /* pushes buttons upward */
+margin-bottom:18px;     /* gap from bottom of screen */
+padding-bottom:10px;
 }
 
-.footer button { flex:1; }
+.footer button {
+flex:1;
+margin-top:0;
+}
 
+/* STANDALONE ACTION BUTTONS (Reveal + End) */
+#game button.blue,
+#game button.red {
+margin-top:8px;
+width:100%;
+}
+
+/* SELECT */
 select {
 width:100%;
-padding:12px;
-font-size:18px;
-margin-top:10px;
+padding:10px;
+font-size:14px;
+margin-top:8px;
 border-radius:10px;
 }
 
-table { width:100%; margin-top:20px; }
-td { padding:10px; font-size:20px; }
+/* TABLE */
+table { width:100%; margin-top:12px; }
+td { padding:6px; font-size:14px; }
+
+/* MOBILE FINE TUNE */
+@media (max-width:480px) {
+#app { padding:8px; }
+button { font-size:12px; }
+}
+
+/* TABLET */
+@media (min-width:768px) and (max-width:1024px) {
+#app { max-width:700px; }
+}
+
+/* LAPTOP */
+@media (min-width:1025px) {
+#app { max-width:900px; }
+}
+
 </style>
 </head>
 
@@ -173,8 +221,6 @@ td { padding:10px; font-size:20px; }
 <script>
 
 const cards = [
-
-/* 📖 BIBLE CHARACTERS */
 {e:"👨🍎🌳", a:"Adam", c:"bible"},
 {e:"👩🍎🐍", a:"Eve", c:"bible"},
 {e:"🌧️⛵🦒🦁", a:"Noah", c:"bible"},
@@ -193,14 +239,12 @@ const cards = [
 {e:"🌊🕊️🩴🏕️🦗", a:"John the Baptist", c:"bible"},
 {e:"🪽🤱🌠🐑", a:"Jesus", c:"bible"},
 
-/* 🌿 FEASTS & EVENTS */
 {e:"🕎", a:"Hanukkah", c:"feasts"},
 {e:"🌿🩸🐑🚪", a:"Passover", c:"feasts"},
 {e:"🔥🕊️", a:"Pentecost", c:"feasts"},
 {e:"✝️🪦✨", a:"Resurrection", c:"feasts"},
 {e:"✝️🩸🌑", a:"Crucifixion", c:"feasts"},
 
-/* 😂 FUNNY SOUNDS */
 {e:"🌱✅ (Root Truth)", a:"Root Truth = Ruth", c:"funny"},
 {e:"🚫 AHH", a:"No Are = Noah", c:"funny"},
 {e:"✅🗣️ (Done Yell)", a:"Done Yell = Daniel", c:"funny"},
@@ -211,20 +255,13 @@ const cards = [
 {e:"📊 (Poll)", a:"Poll = Paul", c:"funny"}
 ];
 
-let teamCount = 2;
-let team = 1;
-let score = 0;
-let time = 60;
-let timer;
-let used = [];
-let scores = [];
-let selectedCategory = "mixed";
-let currentCard = null;
+let teamCount=2, team=1, score=0, time=60, timer;
+let used=[], scores=[], selectedCategory="mixed", currentCard=null;
 
 function startGame(){
-teamCount = parseInt(document.getElementById("teams").value);
-selectedCategory = document.getElementById("category").value;
-scores = Array(teamCount).fill(0);
+teamCount=parseInt(document.getElementById("teams").value);
+selectedCategory=document.getElementById("category").value;
+scores=Array(teamCount).fill(0);
 
 document.getElementById("start").classList.remove("show");
 document.getElementById("game").classList.add("show");
@@ -233,64 +270,48 @@ startRound();
 }
 
 function getCards(){
-return selectedCategory === "mixed"
+return selectedCategory==="mixed"
 ? cards
-: cards.filter(c => c.c === selectedCategory);
+: cards.filter(c=>c.c===selectedCategory);
 }
 
 function startRound(){
-time = 60;
-score = 0;
-used = [];
-
-document.getElementById("team").innerText = team;
-
+time=60; score=0; used=[];
+document.getElementById("team").innerText=team;
 nextCard();
 
-timer = setInterval(()=>{
+timer=setInterval(()=>{
 time--;
-document.getElementById("time").innerText = time;
-if(time <= 0) endRound();
+document.getElementById("time").innerText=time;
+if(time<=0) endRound();
 },1000);
 }
 
 function nextCard(){
-let pool = getCards();
-
-if(used.length === pool.length) used = [];
-
+let pool=getCards();
+if(used.length===pool.length) used=[];
 let i;
-do {
-i = Math.floor(Math.random() * pool.length);
-} while(used.includes(i));
-
+do{ i=Math.floor(Math.random()*pool.length); }
+while(used.includes(i));
 used.push(i);
 
-currentCard = pool[i];
-
-document.getElementById("emoji").innerText = currentCard.e;
-document.getElementById("clue").innerText = "";
+currentCard=pool[i];
+document.getElementById("emoji").innerText=currentCard.e;
+document.getElementById("clue").innerText="";
 }
 
 function revealAnswer(){
 if(!currentCard) return;
-
-document.getElementById("clue").innerText =
-currentCard.c === "funny"
-? currentCard.e + " (" + currentCard.a + ")"
-: currentCard.a;
+document.getElementById("clue").innerText=currentCard.a;
 }
 
 function correct(){
-score++;
-scores[team-1] = score;
-document.getElementById("score").innerText = score;
+score++; scores[team-1]=score;
+document.getElementById("score").innerText=score;
 nextCard();
 }
 
-function skip(){
-nextCard();
-}
+function skip(){ nextCard(); }
 
 function endGame(){
 clearInterval(timer);
@@ -299,15 +320,12 @@ showResults();
 
 function endRound(){
 clearInterval(timer);
-
-if(team < teamCount){
+if(team<teamCount){
 team++;
-document.getElementById("nextTeam").innerText = team;
+document.getElementById("nextTeam").innerText=team;
 document.getElementById("game").classList.remove("show");
 document.getElementById("between").classList.add("show");
-} else {
-showResults();
-}
+}else showResults();
 }
 
 function nextTeam(){
@@ -321,20 +339,14 @@ document.getElementById("game").classList.remove("show");
 document.getElementById("between").classList.remove("show");
 document.getElementById("end").classList.add("show");
 
-let table = "";
-let max = 0;
-let winner = 1;
-
+let table="",max=0,winner=1;
 scores.forEach((s,i)=>{
-if(s > max){
-max = s;
-winner = i+1;
-}
-table += `<tr><td>Team ${i+1}</td><td>${s}</td></tr>`;
+if(s>max){max=s;winner=i+1;}
+table+=`<tr><td>Team ${i+1}</td><td>${s}</td></tr>`;
 });
 
-document.getElementById("results").innerHTML = table;
-document.getElementById("winner").innerText = "Team " + winner + " Wins 🎉";
+document.getElementById("results").innerHTML=table;
+document.getElementById("winner").innerText="Team "+winner+" Wins 🎉";
 }
 
 </script>
