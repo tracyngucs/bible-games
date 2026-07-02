@@ -2,146 +2,137 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Emoji Bible Guess</title>
 
 <style>
+/* 1. Use modern css viewport sizing to bypass mobile dynamic URL bar overlap */
 body {
-margin:0;
-font-family:Arial;
-background:linear-gradient(180deg,#2b5876,#4e4376);
-color:white;
-height:100vh;
-overflow:hidden;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(180deg, #2b5876, #4e4376);
+  color: white;
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height fix */
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
-/* APP WRAP (more breathing room at bottom) */
 #app {
-width:100%;
-max-width:850px;
-margin:auto;
-height:100vh;
-display:flex;
-flex-direction:column;
-padding:clamp(8px, 1.5vw, 16px);
-box-sizing:border-box;
+  max-width: 500px;
+  margin: auto;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: 15px 20px (15px + env(safe-area-inset-bottom)); /* Accounting for iOS bottom bar indicator */
+  box-sizing: border-box;
 }
 
-/* SCREENS */
-.screen { display:none; flex-direction:column; height:100%; }
-.show { display:flex; }
+.screen { 
+  display: none; 
+  flex-direction: column; 
+  height: 100%; 
+  justify-content: space-between; /* Keeps structure aligned tightly */
+}
+.show { display: flex; }
 
-/* TITLE */
-h1 {
-text-align:center;
-margin-top:clamp(8px, 2vh, 20px);
-font-size:clamp(18px, 2.5vw, 28px);
+h1 { 
+  text-align: center; 
+  margin-top: 15px; 
+  margin-bottom: 10px;
+  font-size: 28px;
 }
 
-/* CARD */
 .card {
-background:white;
-color:black;
-padding:clamp(10px, 1.5vw, 18px);
-border-radius:18px;
-margin-top:12px;
-text-align:center;
+  background: white;
+  color: black;
+  padding: 20px;
+  border-radius: 20px;
+  text-align: center;
+  box-sizing: border-box;
+  overflow-y: auto; /* Fallback for exceptionally short screens */
 }
 
-/* BUTTON BASE (SHRUNK) */
+/* START SCREEN LAYOUT REFACTOR */
+#start {
+  justify-content: center; /* Center everything gracefully vertically */
+}
+#start .card {
+  margin-top: 10px;
+}
+
 button {
-padding:clamp(10px, 1.2vw, 14px);
-border:none;
-border-radius:12px;
-font-size:clamp(12px, 1.8vw, 16px);
-margin-top:10px;
-font-weight:bold;
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 15px;
+  font-size: 18px;
+  margin-top: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  box-sizing: border-box;
 }
 
-/* COLORS */
-.primary { background:#00c853; color:white; }
-.secondary { background:#ffca28; }
-.blue { background:#2196f3; color:white; }
-.red { background:#e53935; color:white; }
+.primary { background: #00c853; color: white; }
+.secondary { background: #ffca28; color: black; }
+.blue { background: #2196f3; color: white; }
+.red { background: #e53935; color: white; }
 
-/* INFO BAR (SHRUNK) */
 .info {
-display:flex;
-justify-content:space-between;
-font-size:clamp(14px, 2.2vw, 20px);
-margin-top:6px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 24px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
-/* MAIN EMOJI (SHRUNK) */
+/* 2. Controls scaling loop—preventing container from pushing down buttons */
 #emoji {
-flex:1;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:clamp(36px, 8vw, 64px);
-text-align:center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 65px; /* Scaled slightly down to safeguard viewports */
+  text-align: center;
+  min-height: 120px;
 }
 
-/* CLUE */
 #clue {
-text-align:center;
-font-size:clamp(14px, 2vw, 18px);
-margin-top:6px;
-opacity:0.95;
-white-space:pre-line;
-min-height:24px;
+  text-align: center;
+  font-size: 20px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  opacity: 0.95;
+  white-space: pre-line;
+  min-height: 30px; /* Reserves uniform visual tracking spacing */
 }
 
-/* FOOTER BUTTON AREA (KEY FIX) */
+/* GAME BUTTON CONTROLS ENGINE GRID */
 .footer {
-display:flex;
-gap:8px;
-margin-top:auto;        /* pushes buttons upward */
-margin-bottom:18px;     /* gap from bottom of screen */
-padding-bottom:10px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 0px;
+}
+.footer button { flex: 1; margin-top: 0; }
+
+#game > button {
+  margin-top: 10px;
 }
 
-.footer button {
-flex:1;
-margin-top:0;
-}
-
-/* STANDALONE ACTION BUTTONS (Reveal + End) */
-#game button.blue,
-#game button.red {
-margin-top:8px;
-width:100%;
-}
-
-/* SELECT */
 select {
-width:100%;
-padding:10px;
-font-size:14px;
-margin-top:8px;
-border-radius:10px;
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  box-sizing: border-box;
 }
 
-/* TABLE */
-table { width:100%; margin-top:12px; }
-td { padding:6px; font-size:14px; }
-
-/* MOBILE FINE TUNE */
-@media (max-width:480px) {
-#app { padding:8px; }
-button { font-size:12px; }
-}
-
-/* TABLET */
-@media (min-width:768px) and (max-width:1024px) {
-#app { max-width:700px; }
-}
-
-/* LAPTOP */
-@media (min-width:1025px) {
-#app { max-width:900px; }
-}
-
+table { width: 100%; margin-top: 15px; }
+td { padding: 8px; font-size: 18px; }
 </style>
 </head>
 
@@ -150,206 +141,237 @@ button { font-size:12px; }
 
 <!-- START -->
 <div id="start" class="screen show">
-<h1>📖 Emoji Bible Guess</h1>
+  <div>
+    <h1>📖 Emoji Bible Guess</h1>
+    <div class="card">
+      <h2>Select Teams</h2>
+      <select id="teams">
+        <option value="2">2 Teams</option>
+        <option value="3">3 Teams</option>
+        <option value="4">4 Teams</option>
+        <option value="5">5 Teams</option>
+      </select>
 
-<div class="card">
+      <h2>Select Category</h2>
+      <select id="category">
+        <option value="mixed">🔀 Mixed</option>
+        <option value="bible">📖 Bible Characters</option>
+        <option value="feasts">🌿 Feasts & Events</option>
+        <option value="funny">😂 Funny Sounds</option>
+      </select>
 
-<h2>Select Teams</h2>
-<select id="teams">
-<option value="2">2 Teams</option>
-<option value="3">3 Teams</option>
-<option value="4">4 Teams</option>
-<option value="5">5 Teams</option>
-</select>
-
-<h2>Select Category</h2>
-<select id="category">
-<option value="mixed">🔀 Mixed</option>
-<option value="bible">📖 Bible Characters</option>
-<option value="feasts">🌿 Feasts & Events</option>
-<option value="funny">😂 Funny Sounds</option>
-</select>
-
-<button class="primary" onclick="startGame()">Start Game</button>
-</div>
+      <button class="primary" onclick="startGame()">Start Game</button>
+    </div>
+  </div>
 </div>
 
 <!-- GAME -->
 <div id="game" class="screen">
+  <div class="info">
+    <div>⏱ <span id="time">60</span></div>
+    <div>⭐ <span id="score">0</span></div>
+    <div>🏆 T<span id="team">1</span></div>
+  </div>
 
-<div class="info">
-<div>⏱ <span id="time">60</span></div>
-<div>⭐ <span id="score">0</span></div>
-<div>🏆 T<span id="team">1</span></div>
-</div>
+  <div id="emoji">👑👶🗡️</div>
+  <div id="clue"></div>
 
-<div id="emoji">👑👶🗡️</div>
-<div id="clue"></div>
-
-<div class="footer">
-<button class="primary" onclick="correct()">✓ Correct</button>
-<button class="secondary" onclick="skip()">⏭ Skip</button>
-</div>
-
-<button class="blue" onclick="revealAnswer()">👁️ Reveal Answer</button>
-<button class="red" onclick="endGame()">⛔ End Game</button>
-
+  <!-- Group buttons cleanly inside the flex tracking space layout -->
+  <div class="controls-container">
+    <div class="footer">
+      <button class="primary" onclick="correct()">✓ Correct</button>
+      <button class="secondary" onclick="skip()">⏭ Skip</button>
+    </div>
+    <button class="blue" onclick="revealAnswer()">👁️ Reveal Answer</button>
+    <button class="red" onclick="endGame()">⛔ End Game</button>
+  </div>
 </div>
 
 <!-- BETWEEN -->
-<div id="between" class="screen">
-<h1>Team <span id="nextTeam">2</span></h1>
-<div class="card">
-<h2>Pass the phone 📱</h2>
-<button class="blue" onclick="nextTeam()">Start</button>
-</div>
+<div id="between" class="screen" style="justify-content: center;">
+  <h1>Team <span id="nextTeam">2</span></h1>
+  <div class="card">
+    <h2>Pass the phone 📱</h2>
+    <button class="blue" onclick="nextTeam()">Start</button>
+  </div>
 </div>
 
 <!-- END -->
-<div id="end" class="screen">
-<h1>🏆 Game Over</h1>
-
-<div class="card">
-<h2 id="winner"></h2>
-<table id="results"></table>
-<button class="primary" onclick="location.reload()">Play Again</button>
-</div>
+<div id="end" class="screen" style="justify-content: center;">
+  <h1>🏆 Game Over</h1>
+  <div class="card">
+    <h2 id="winner"></h2>
+    <table id="results"></table>
+    <button class="primary" onclick="location.reload()">Play Again</button>
+  </div>
 </div>
 
 </div>
 
 <script>
-
 const cards = [
-{e:"👨🍎🌳", a:"Adam", c:"bible"},
-{e:"👩🍎🐍", a:"Eve", c:"bible"},
-{e:"🌧️⛵🦒🦁", a:"Noah", c:"bible"},
-{e:"⭐👴🐪", a:"Abraham", c:"bible"},
-{e:"👦🔥🐏", a:"Isaac", c:"bible"},
-{e:"🌈👕💤🌾", a:"Joseph", c:"bible"},
-{e:"👶🧺🐊", a:"Moses", c:"bible"},
-{e:"💪🦁✂️", a:"Samson", c:"bible"},
-{e:"🌾👩❤️", a:"Ruth", c:"bible"},
-{e:"👑🎶❤️", a:"David", c:"bible"},
-{e:"👑👶🗡️", a:"Solomon", c:"bible"},
-{e:"🔥🐂🐦‍⬛🍞", a:"Elijah", c:"bible"},
-{e:"🌊🐋🙏", a:"Jonah", c:"bible"},
-{e:"🦁🙏", a:"Daniel", c:"bible"},
-{e:"👸✡️📜💍", a:"Esther", c:"bible"},
-{e:"🌊🕊️🩴🏕️🦗", a:"John the Baptist", c:"bible"},
-{e:"🪽🤱🌠🐑", a:"Jesus", c:"bible"},
+  /* 📖 BIBLE CHARACTERS */
+  {e:"👨🍎🌳", a:"Adam", c:"bible"},
+  {e:"👩🍎🐍", a:"Eve", c:"bible"},
+  {e:"🌧️⛵🦒🦁", a:"Noah", c:"bible"},
+  {e:"⭐👴🐪", a:"Abraham", c:"bible"},
+  {e:"👦🔥🐏", a:"Isaac", c:"bible"},
+  {e:"🌈👕💤🌾", a:"Joseph", c:"bible"},
+  {e:"👶🧺🐊", a:"Moses", c:"bible"},
+  {e:"💪🦁✂️", a:"Samson", c:"bible"},
+  {e:"🌾👩❤️", a:"Ruth", c:"bible"},
+  {e:"👑🎶❤️", a:"David", c:"bible"},
+  {e:"👑👶🗡️", a:"Solomon", c:"bible"},
+  {e:"🔥🐂🐦‍⬛🍞", a:"Elijah", c:"bible"},
+  {e:"🌊🐋🙏", a:"Jonah", c:"bible"},
+  {e:"🦁🙏", a:"Daniel", c:"bible"},
+  {e:"👸✡️📜💍", a:"Esther", c:"bible"},
+  {e:"🌊🕊️🩴🏕️🦗", a:"John the Baptist", c:"bible"},
+  {e:"🪽🤱🌠🐑", a:"Jesus", c:"bible"},
 
-{e:"🕎", a:"Hanukkah", c:"feasts"},
-{e:"🌿🩸🐑🚪", a:"Passover", c:"feasts"},
-{e:"🔥🕊️", a:"Pentecost", c:"feasts"},
-{e:"✝️🪦✨", a:"Resurrection", c:"feasts"},
-{e:"✝️🩸🌑", a:"Crucifixion", c:"feasts"},
+  /* 🌿 FEASTS & EVENTS */
+  {e:"🕎", a:"Hanukkah", c:"feasts"},
+  {e:"🌿🩸🐑🚪", a:"Passover", c:"feasts"},
+  {e:"🔥🕊️", a:"Pentecost", c:"feasts"},
+  {e:"✝️🪦✨", a:"Resurrection", c:"feasts"},
+  {e:"✝️🩸🌑", a:"Crucifixion", c:"feasts"},
 
-{e:"🌱✅ (Root Truth)", a:"Root Truth = Ruth", c:"funny"},
-{e:"🚫 AHH", a:"No Are = Noah", c:"funny"},
-{e:"✅🗣️ (Done Yell)", a:"Done Yell = Daniel", c:"funny"},
-{e:"Yester", a:"Esther", c:"funny"},
-{e:"🤵👰️ (Present Tense)", a:"Present Tense = Mary", c:"funny"},
-{e:"Luxurious", a:"Lazarus", c:"funny"},
-{e:"🐍S (Starts with B)", a:"Starts with B = Boaz", c:"funny"},
-{e:"📊 (Poll)", a:"Poll = Paul", c:"funny"}
+  /* 😂 FUNNY SOUNDS */
+  {e:"🌱✅ (Root Truth)", a:"Root Truth = Ruth", c:"funny"},
+  {e:"🚫 AHH", a:"No Are = Noah", c:"funny"},
+  {e:"✅🗣️ (Done Yell)", a:"Done Yell = Daniel", c:"funny"},
+  {e:"Yester", a:"Esther", c:"funny"},
+  {e:"🤵👰️ (Present Tense)", a:"Present Tense = Mary", c:"funny"},
+  {e:"Luxurious", a:"Lazarus", c:"funny"},
+  {e:"🐍S (Starts with B)", a:"Starts with B = Boaz", c:"funny"},
+  {e:"📊 (Poll)", a:"Poll = Paul", c:"funny"}
 ];
 
-let teamCount=2, team=1, score=0, time=60, timer;
-let used=[], scores=[], selectedCategory="mixed", currentCard=null;
+let teamCount = 2;
+let team = 1;
+let score = 0;
+let time = 60;
+let timer;
+let used = [];
+let scores = [];
+let selectedCategory = "mixed";
+let currentCard = null;
 
 function startGame(){
-teamCount=parseInt(document.getElementById("teams").value);
-selectedCategory=document.getElementById("category").value;
-scores=Array(teamCount).fill(0);
+  teamCount = parseInt(document.getElementById("teams").value);
+  selectedCategory = document.getElementById("category").value;
+  scores = Array(teamCount).fill(0);
 
-document.getElementById("start").classList.remove("show");
-document.getElementById("game").classList.add("show");
+  document.getElementById("start").classList.remove("show");
+  document.getElementById("game").classList.add("show");
 
-startRound();
+  startRound();
 }
 
 function getCards(){
-return selectedCategory==="mixed"
-? cards
-: cards.filter(c=>c.c===selectedCategory);
+  return selectedCategory === "mixed"
+    ? cards
+    : cards.filter(c => c.c === selectedCategory);
 }
 
 function startRound(){
-time=60; score=0; used=[];
-document.getElementById("team").innerText=team;
-nextCard();
+  time = 60;
+  score = 0;
+  used = [];
 
-timer=setInterval(()=>{
-time--;
-document.getElementById("time").innerText=time;
-if(time<=0) endRound();
-},1000);
+  document.getElementById("team").innerText = team;
+
+  nextCard();
+
+  timer = setInterval(()=>{
+    time--;
+    document.getElementById("time").innerText = time;
+    if(time <= 0) endRound();
+  },1000);
 }
 
 function nextCard(){
-let pool=getCards();
-if(used.length===pool.length) used=[];
-let i;
-do{ i=Math.floor(Math.random()*pool.length); }
-while(used.includes(i));
-used.push(i);
+  let pool = getCards();
 
-currentCard=pool[i];
-document.getElementById("emoji").innerText=currentCard.e;
-document.getElementById("clue").innerText="";
+  if(used.length === pool.length) used = [];
+
+  let i;
+  do {
+    i = Math.floor(Math.random() * pool.length);
+  } while(used.includes(i));
+
+  used.push(i);
+
+  currentCard = pool[i];
+
+  document.getElementById("emoji").innerText = currentCard.e;
+  document.getElementById("clue").innerText = "";
 }
 
 function revealAnswer(){
-if(!currentCard) return;
-document.getElementById("clue").innerText=currentCard.a;
+  if(!currentCard) return;
+
+  document.getElementById("clue").innerText =
+    currentCard.c === "funny"
+      ? currentCard.e + " (" + currentCard.a + ")"
+      : currentCard.a;
 }
 
 function correct(){
-score++; scores[team-1]=score;
-document.getElementById("score").innerText=score;
-nextCard();
+  score++;
+  scores[team-1] = score;
+  document.getElementById("score").innerText = score;
+  nextCard();
 }
 
-function skip(){ nextCard(); }
+function skip(){
+  nextCard();
+}
 
 function endGame(){
-clearInterval(timer);
-showResults();
+  clearInterval(timer);
+  showResults();
 }
 
 function endRound(){
-clearInterval(timer);
-if(team<teamCount){
-team++;
-document.getElementById("nextTeam").innerText=team;
-document.getElementById("game").classList.remove("show");
-document.getElementById("between").classList.add("show");
-}else showResults();
+  clearInterval(timer);
+
+  if(team < teamCount){
+    team++;
+    document.getElementById("nextTeam").innerText = team;
+    document.getElementById("game").classList.remove("show");
+    document.getElementById("between").classList.add("show");
+  } else {
+    showResults();
+  }
 }
 
 function nextTeam(){
-document.getElementById("between").classList.remove("show");
-document.getElementById("game").classList.add("show");
-startRound();
+  document.getElementById("between").classList.remove("show");
+  document.getElementById("game").classList.add("show");
+  startRound();
 }
 
 function showResults(){
-document.getElementById("game").classList.remove("show");
-document.getElementById("between").classList.remove("show");
-document.getElementById("end").classList.add("show");
+  document.getElementById("game").classList.remove("show");
+  document.getElementById("between").classList.remove("show");
+  document.getElementById("end").classList.add("show");
 
-let table="",max=0,winner=1;
-scores.forEach((s,i)=>{
-if(s>max){max=s;winner=i+1;}
-table+=`<tr><td>Team ${i+1}</td><td>${s}</td></tr>`;
-});
+  let table = "";
+  let max = 0;
+  let winner = 1;
 
-document.getElementById("results").innerHTML=table;
-document.getElementById("winner").innerText="Team "+winner+" Wins 🎉";
+  scores.forEach((s,i)=>{
+    if(s > max){
+      max = s;
+      winner = i+1;
+    }
+    table += `<tr><td>Team ${i+1}</td><td>${s}</td></tr>`;
+  });
+
+  document.getElementById("results").innerHTML = table;
+  document.getElementById("winner").innerText = "Team " + winner + " Wins 🎉";
 }
-
 </script>
-
 </body>
 </html>
