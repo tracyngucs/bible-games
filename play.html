@@ -50,6 +50,7 @@ font-weight:bold;
 .primary { background:#00c853; color:white; }
 .secondary { background:#ffca28; }
 .blue { background:#2196f3; color:white; }
+.red { background:#e53935; color:white; }
 
 .info {
 display:flex;
@@ -67,10 +68,17 @@ font-size:80px;
 text-align:center;
 }
 
+#clue {
+text-align:center;
+font-size:22px;
+margin-top:10px;
+opacity:0.95;
+}
+
 .footer {
 display:flex;
 gap:10px;
-margin-bottom:20px;
+margin-bottom:10px;
 }
 
 .footer button { flex:1; }
@@ -127,11 +135,15 @@ td { padding:10px; font-size:20px; }
 </div>
 
 <div id="emoji">👑👶🗡️</div>
+<div id="clue"></div>
 
 <div class="footer">
 <button class="primary" onclick="correct()">✓ Correct</button>
 <button class="secondary" onclick="skip()">⏭ Skip</button>
 </div>
+
+<button class="blue" onclick="revealAnswer()">👁️ Reveal Answer</button>
+<button class="red" onclick="endGame()">⛔ End Game</button>
 
 </div>
 
@@ -159,10 +171,9 @@ td { padding:10px; font-size:20px; }
 
 <script>
 
-/* ---------------- CARD DATABASE ---------------- */
+/* ---------------- CARD SET ---------------- */
 
 const cards = [
-
 /* 📖 BIBLE CHARACTERS */
 {e:"👨🍎🌳", a:"Adam", c:"bible"},
 {e:"👩🍎🐍", a:"Eve", c:"bible"},
@@ -189,18 +200,18 @@ const cards = [
 {e:"✝️🪦✨", a:"Resurrection", c:"feasts"},
 {e:"✝️🩸🌑", a:"Crucifixion", c:"feasts"},
 
-/* 😂 FUNNY SOUNDS (keep exact style) */
+/* 😂 FUNNY SOUNDS */
 {e:"🌱✅", a:"Root Truth = Ruth", c:"funny"},
-{e:"🚫🅰️", a:"No Are = Noah", c:"funny"},
-{e:"🗣️❌", a:"Done Yell = Daniel", c:"funny"},
-{e:"⏪", a:"Yester = Esther", c:"funny"},
-{e:"🤵🏻👰🏻‍♀️", a:"Marry = Mary", c:"funny"},
-{e:"💎💰", a:"Luxurious = Lazarus", c:"funny"},
-{e:"🐍S", a:"Boa S = Boaz", c:"funny"},
+{e:"🚫 AHH", a:"No Are = Noah", c:"funny"},
+{e:"✅🗣️", a:"Done Yell = Daniel", c:"funny"},
+{e:"Yester", a:"Esther", c:"funny"},
+{e:"🤵🏻👰🏻‍♀️", a:"Present Tense = Mary", c:"funny"},
+{e:"Luxurious", a:"Lazarus", c:"funny"},
+{e:"🐍S", a:"Starts with B = Boaz", c:"funny"},
 {e:"📊", a:"Poll = Paul", c:"funny"}
 ];
 
-/* ---------------- GAME STATE ---------------- */
+/* ---------------- STATE ---------------- */
 
 let teamCount = 2;
 let team = 1;
@@ -211,10 +222,9 @@ let used = [];
 let scores = [];
 let selectedCategory = "mixed";
 
-/* ---------------- START GAME ---------------- */
+/* ---------------- START ---------------- */
 
 function startGame(){
-
 teamCount = parseInt(document.getElementById("teams").value);
 selectedCategory = document.getElementById("category").value;
 
@@ -236,7 +246,6 @@ return cards.filter(c => c.c === selectedCategory);
 /* ---------------- ROUND ---------------- */
 
 function startRound(){
-
 time = 60;
 score = 0;
 used = [];
@@ -248,17 +257,13 @@ nextCard();
 timer = setInterval(()=>{
 time--;
 document.getElementById("time").innerText = time;
-
-if(time <= 0){
-endRound();
-}
+if(time <= 0) endRound();
 },1000);
 }
 
-/* ---------------- CARD LOGIC ---------------- */
+/* ---------------- CARD ---------------- */
 
 function nextCard(){
-
 let pool = getCards();
 
 if(used.length === pool.length) used = [];
@@ -270,8 +275,28 @@ i = Math.floor(Math.random() * pool.length);
 
 used.push(i);
 
-document.getElementById("emoji").innerText = pool[i].e;
-document.currentAnswer = pool[i].a;
+let card = pool[i];
+
+document.getElementById("emoji").innerText = card.e;
+document.getElementById("clue").innerText = "";
+
+/* store full card for reveal */
+document.currentCard = card;
+}
+
+/* ---------------- REVEAL ANSWER ---------------- */
+
+function revealAnswer(){
+let card = document.currentCard;
+
+if(!card) return;
+
+/* Funny shows clue + answer style */
+if(card.c === "funny"){
+document.getElementById("clue").innerText = card.a;
+} else {
+document.getElementById("clue").innerText = card.a;
+}
 }
 
 /* ---------------- ACTIONS ---------------- */
@@ -287,17 +312,22 @@ function skip(){
 nextCard();
 }
 
-/* ---------------- TEAM FLOW ---------------- */
+/* ---------------- END GAME ---------------- */
+
+function endGame(){
+clearInterval(timer);
+showResults();
+}
+
+/* ---------------- ROUND END ---------------- */
 
 function endRound(){
-
 clearInterval(timer);
-
-document.getElementById("game").classList.remove("show");
 
 if(team < teamCount){
 team++;
 document.getElementById("nextTeam").innerText = team;
+document.getElementById("game").classList.remove("show");
 document.getElementById("between").classList.add("show");
 } else {
 showResults();
@@ -314,6 +344,8 @@ startRound();
 
 function showResults(){
 
+document.getElementById("game").classList.remove("show");
+document.getElementById("between").classList.remove("show");
 document.getElementById("end").classList.add("show");
 
 let table = "";
