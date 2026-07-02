@@ -75,6 +75,14 @@ margin-bottom:20px;
 
 .footer button { flex:1; }
 
+select {
+width:100%;
+padding:12px;
+font-size:18px;
+margin-top:10px;
+border-radius:10px;
+}
+
 table { width:100%; margin-top:20px; }
 td { padding:10px; font-size:20px; }
 </style>
@@ -88,13 +96,21 @@ td { padding:10px; font-size:20px; }
 <h1>📖 Emoji Bible Guess</h1>
 
 <div class="card">
-<h2>Select Teams</h2>
 
+<h2>Select Teams</h2>
 <select id="teams">
 <option value="2">2 Teams</option>
 <option value="3">3 Teams</option>
 <option value="4">4 Teams</option>
 <option value="5">5 Teams</option>
+</select>
+
+<h2>Select Category</h2>
+<select id="category">
+<option value="mixed">🔀 Mixed</option>
+<option value="bible">📖 Bible Characters</option>
+<option value="feasts">🌿 Feasts & Events</option>
+<option value="funny">😂 Funny Sounds</option>
 </select>
 
 <button class="primary" onclick="startGame()">Start Game</button>
@@ -119,10 +135,9 @@ td { padding:10px; font-size:20px; }
 
 </div>
 
-<!-- BETWEEN TEAMS -->
+<!-- BETWEEN -->
 <div id="between" class="screen">
 <h1>Team <span id="nextTeam">2</span></h1>
-
 <div class="card">
 <h2>Pass the phone 📱</h2>
 <button class="blue" onclick="nextTeam()">Start</button>
@@ -144,27 +159,48 @@ td { padding:10px; font-size:20px; }
 
 <script>
 
-const cards = [
-{e:"👑👶🗡️", a:"Solomon"},
-{e:"👶🧺🐊", a:"Moses"},
-{e:"🦁🙏", a:"Daniel"},
-{e:"🌊🐋🙏", a:"Jonah"},
-{e:"🔥🐂🐦‍⬛🍞", a:"Elijah"},
-{e:"👸✡️📜💍", a:"Esther"},
-{e:"🪽🤱🏻🌠🐑", a:"Jesus"},
-{e:"🕎", a:"Hanukkah"},
-{e:"🌿🩸🐑🚪", a:"Passover"},
+/* ---------------- CARD DATABASE ---------------- */
 
-// funny ones
-{e:"🌱✅", a:"Ruth"},
-{e:"🚫🅰️", a:"Noah"},
-{e:"🗣️❌", a:"Daniel"},
-{e:"⏪", a:"Esther"},
-{e:"🤵🏻👰🏻‍♀️", a:"Mary"},
-{e:"💎💰", a:"Lazarus"},
-{e:"🐍S", a:"Boaz"},
-{e:"📊", a:"Paul"}
+const cards = [
+
+/* 📖 BIBLE CHARACTERS */
+{e:"👨🍎🌳", a:"Adam", c:"bible"},
+{e:"👩🍎🐍", a:"Eve", c:"bible"},
+{e:"🌧️⛵🦒🦁", a:"Noah", c:"bible"},
+{e:"⭐👴🐪", a:"Abraham", c:"bible"},
+{e:"👦🔥🐏", a:"Isaac", c:"bible"},
+{e:"🌈👕💤🌾", a:"Joseph", c:"bible"},
+{e:"👶🧺🐊", a:"Moses", c:"bible"},
+{e:"💪🦁✂️", a:"Samson", c:"bible"},
+{e:"🌾👩❤️", a:"Ruth", c:"bible"},
+{e:"👑🎶❤️", a:"David", c:"bible"},
+{e:"👑👶🗡️", a:"Solomon", c:"bible"},
+{e:"🔥🐂🐦‍⬛🍞", a:"Elijah", c:"bible"},
+{e:"🌊🐋🙏", a:"Jonah", c:"bible"},
+{e:"🦁🙏", a:"Daniel", c:"bible"},
+{e:"👸✡️📜💍", a:"Esther", c:"bible"},
+{e:"🌊🕊️🩴🏕️🦗", a:"John the Baptist", c:"bible"},
+{e:"🪽🤱🌠🐑", a:"Jesus", c:"bible"},
+
+/* 🌿 FEASTS & EVENTS */
+{e:"🕎", a:"Hanukkah", c:"feasts"},
+{e:"🌿🩸🐑🚪", a:"Passover", c:"feasts"},
+{e:"🔥🕊️", a:"Pentecost", c:"feasts"},
+{e:"✝️🪦✨", a:"Resurrection", c:"feasts"},
+{e:"✝️🩸🌑", a:"Crucifixion", c:"feasts"},
+
+/* 😂 FUNNY SOUNDS (keep exact style) */
+{e:"🌱✅", a:"Root Truth = Ruth", c:"funny"},
+{e:"🚫🅰️", a:"No Are = Noah", c:"funny"},
+{e:"🗣️❌", a:"Done Yell = Daniel", c:"funny"},
+{e:"⏪", a:"Yester = Esther", c:"funny"},
+{e:"🤵🏻👰🏻‍♀️", a:"Marry = Mary", c:"funny"},
+{e:"💎💰", a:"Luxurious = Lazarus", c:"funny"},
+{e:"🐍S", a:"Boa S = Boaz", c:"funny"},
+{e:"📊", a:"Poll = Paul", c:"funny"}
 ];
+
+/* ---------------- GAME STATE ---------------- */
 
 let teamCount = 2;
 let team = 1;
@@ -173,9 +209,15 @@ let time = 60;
 let timer;
 let used = [];
 let scores = [];
+let selectedCategory = "mixed";
+
+/* ---------------- START GAME ---------------- */
 
 function startGame(){
+
 teamCount = parseInt(document.getElementById("teams").value);
+selectedCategory = document.getElementById("category").value;
+
 scores = Array(teamCount).fill(0);
 
 document.getElementById("start").classList.remove("show");
@@ -184,7 +226,17 @@ document.getElementById("game").classList.add("show");
 startRound();
 }
 
+/* ---------------- FILTER ---------------- */
+
+function getCards(){
+if(selectedCategory === "mixed") return cards;
+return cards.filter(c => c.c === selectedCategory);
+}
+
+/* ---------------- ROUND ---------------- */
+
 function startRound(){
+
 time = 60;
 score = 0;
 used = [];
@@ -203,19 +255,26 @@ endRound();
 },1000);
 }
 
+/* ---------------- CARD LOGIC ---------------- */
+
 function nextCard(){
-if(used.length === cards.length) used = [];
+
+let pool = getCards();
+
+if(used.length === pool.length) used = [];
 
 let i;
 do {
-i = Math.floor(Math.random() * cards.length);
+i = Math.floor(Math.random() * pool.length);
 } while(used.includes(i));
 
 used.push(i);
 
-document.getElementById("emoji").innerText = cards[i].e;
-document.currentAnswer = cards[i].a;
+document.getElementById("emoji").innerText = pool[i].e;
+document.currentAnswer = pool[i].a;
 }
+
+/* ---------------- ACTIONS ---------------- */
 
 function correct(){
 score++;
@@ -228,7 +287,10 @@ function skip(){
 nextCard();
 }
 
+/* ---------------- TEAM FLOW ---------------- */
+
 function endRound(){
+
 clearInterval(timer);
 
 document.getElementById("game").classList.remove("show");
@@ -248,7 +310,10 @@ document.getElementById("game").classList.add("show");
 startRound();
 }
 
+/* ---------------- RESULTS ---------------- */
+
 function showResults(){
+
 document.getElementById("end").classList.add("show");
 
 let table = "";
