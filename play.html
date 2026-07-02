@@ -6,14 +6,13 @@
 <title>Emoji Bible Guess</title>
 
 <style>
-/* 1. Use modern css viewport sizing to bypass mobile dynamic URL bar overlap */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: linear-gradient(180deg, #2b5876, #4e4376);
   color: white;
   height: 100vh;
-  height: 100dvh; /* Dynamic viewport height fix */
+  height: 100dvh; 
   overflow: hidden;
   box-sizing: border-box;
 }
@@ -25,7 +24,7 @@ body {
   height: 100dvh;
   display: flex;
   flex-direction: column;
-  padding: 15px 20px (15px + env(safe-area-inset-bottom)); /* Accounting for iOS bottom bar indicator */
+  padding: 20px 20px calc(20px + env(safe-area-inset-bottom)); 
   box-sizing: border-box;
 }
 
@@ -33,7 +32,7 @@ body {
   display: none; 
   flex-direction: column; 
   height: 100%; 
-  justify-content: space-between; /* Keeps structure aligned tightly */
+  justify-content: space-between; 
 }
 .show { display: flex; }
 
@@ -51,12 +50,10 @@ h1 {
   border-radius: 20px;
   text-align: center;
   box-sizing: border-box;
-  overflow-y: auto; /* Fallback for exceptionally short screens */
 }
 
-/* START SCREEN LAYOUT REFACTOR */
 #start {
-  justify-content: center; /* Center everything gracefully vertically */
+  justify-content: center;
 }
 #start .card {
   margin-top: 10px;
@@ -64,14 +61,17 @@ h1 {
 
 button {
   width: 100%;
-  padding: 15px;
+  padding: 16px;
   border: none;
   border-radius: 15px;
-  font-size: 18px;
-  margin-top: 10px;
+  font-size: 20px;
   font-weight: bold;
   cursor: pointer;
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .primary { background: #00c853; color: white; }
@@ -79,47 +79,51 @@ button {
 .blue { background: #2196f3; color: white; }
 .red { background: #e53935; color: white; }
 
+/* TOP HEADER INFO BAR */
 .info {
   display: flex;
   justify-content: space-between;
-  font-size: 24px;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  font-size: 26px;
+  font-weight: bold;
+  padding-top: 10px;
 }
 
-/* 2. Controls scaling loop—preventing container from pushing down buttons */
-#emoji {
+/* CENTERED PLAY AREA (MATCHING SCREENSHOT) */
+.game-center-container {
   flex: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction: row; /* Rows emojis and clues side-by-side if needed, or inline */
   align-items: center;
   justify-content: center;
-  font-size: 65px; /* Scaled slightly down to safeguard viewports */
+  gap: 10px;
+  font-size: 55px; /* Unified large text sizing for center elements */
+  font-weight: bold;
   text-align: center;
-  min-height: 120px;
+}
+
+#emoji {
+  display: inline-block;
 }
 
 #clue {
-  text-align: center;
-  font-size: 20px;
-  margin-top: 5px;
-  margin-bottom: 15px;
-  opacity: 0.95;
-  white-space: pre-line;
-  min-height: 30px; /* Reserves uniform visual tracking spacing */
+  display: inline-block;
+  font-size: 55px; /* Matches emoji size exactly as seen in screenshot */
 }
 
-/* GAME BUTTON CONTROLS ENGINE GRID */
+/* BOTTOM BUTTON CONTAINER STACK */
+.controls-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Uniform margins between all action item rows */
+  width: 100%;
+  margin-bottom: 5px;
+}
+
 .footer {
   display: flex;
-  gap: 10px;
-  margin-bottom: 0px;
+  gap: 12px;
 }
-.footer button { flex: 1; margin-top: 0; }
-
-#game > button {
-  margin-top: 10px;
-}
+.footer button { flex: 1; }
 
 select {
   width: 100%;
@@ -173,10 +177,12 @@ td { padding: 8px; font-size: 18px; }
     <div>🏆 T<span id="team">1</span></div>
   </div>
 
-  <div id="emoji">👑👶🗡️</div>
-  <div id="clue"></div>
+  <!-- Items wrapped into a unified center flex layout matching Screenshot 2026-07-03 at 1.19.36 AM.png -->
+  <div class="game-center-container">
+    <span id="emoji">📊</span>
+    <span id="clue"></span>
+  </div>
 
-  <!-- Group buttons cleanly inside the flex tracking space layout -->
   <div class="controls-container">
     <div class="footer">
       <button class="primary" onclick="correct()">✓ Correct</button>
@@ -237,14 +243,14 @@ const cards = [
   {e:"✝️🩸🌑", a:"Crucifixion", c:"feasts"},
 
   /* 😂 FUNNY SOUNDS */
-  {e:"🌱✅ (Root Truth)", a:"Root Truth = Ruth", c:"funny"},
+  {e:"🌱✅", a:"Root Truth = Ruth", c:"funny"},
   {e:"🚫 AHH", a:"No Are = Noah", c:"funny"},
-  {e:"✅🗣️ (Done Yell)", a:"Done Yell = Daniel", c:"funny"},
+  {e:"✅🗣️", a:"Done Yell = Daniel", c:"funny"},
   {e:"Yester", a:"Esther", c:"funny"},
-  {e:"🤵👰️ (Present Tense)", a:"Present Tense = Mary", c:"funny"},
+  {e:"🤵👰️", a:"Present Tense = Mary", c:"funny"},
   {e:"Luxurious", a:"Lazarus", c:"funny"},
-  {e:"🐍S (Starts with B)", a:"Starts with B = Boaz", c:"funny"},
-  {e:"📊 (Poll)", a:"Poll = Paul", c:"funny"}
+  {e:"🐍S", a:"Starts with B = Boaz", c:"funny"},
+  {e:"📊", a:"Poll = Paul", c:"funny"}
 ];
 
 let teamCount = 2;
@@ -311,10 +317,7 @@ function nextCard(){
 function revealAnswer(){
   if(!currentCard) return;
 
-  document.getElementById("clue").innerText =
-    currentCard.c === "funny"
-      ? currentCard.e + " (" + currentCard.a + ")"
-      : currentCard.a;
+  document.getElementById("clue").innerText = " (" + currentCard.a + ")";
 }
 
 function correct(){
