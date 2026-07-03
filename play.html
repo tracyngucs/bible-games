@@ -220,6 +220,7 @@ td { padding: 8px; font-size: 18px; }
     <div class="card">
       <h2>Select Teams</h2>
       <select id="teams">
+        <option value="individual">🙋 Individual</option>
         <option value="2">2 Teams</option>
         <option value="3">3 Teams</option>
         <option value="4">4 Teams</option>
@@ -244,7 +245,7 @@ td { padding: 8px; font-size: 18px; }
   <div class="info">
     <div>⏱ <span id="time">60</span></div>
     <div>⭐ <span id="score">0</span></div>
-    <div>🏆 T<span id="team">1</span></div>
+    <div id="teamInfo">🏆 T<span id="team">1</span></div>
   </div>
 
   <div class="game-center-container">
@@ -313,17 +314,18 @@ const cards = [
   {e:"✝️🩸🌑", a:"Crucifixion", c:"feasts"},
 
   /* 😂 FUNNY SOUNDS */
-  {e:"🌱✅", h:"Root Truth", a:"Root Truth = Ruth", c:"funny"},
-  {e:"🚫 AHH", a:"No Are = Noah", c:"funny"},
-  {e:"✅🗣️", h:"Done Yell", a:"Done Yell = Daniel", c:"funny"},
+  {e:"🌱✅", h:"Root Truth", a:"Ruth", c:"funny"},
+  {e:"🚫 AHH", a:"Noah", c:"funny"},
+  {e:"✅🗣️", h:"Done Yell", a:"Daniel", c:"funny"},
   {e:"Yester", a:"Esther", c:"funny"},
-  {e:"🤵👰️", h:"Present Tense", a:"Present Tense = Mary", c:"funny"},
+  {e:"🤵👰️", h:"Present Tense", a:"Mary", c:"funny"},
   {e:"Luxurious", a:"Lazarus", c:"funny"},
-  {e:"🐍S", h:"Starts with B", a:"Starts with B = Boaz", c:"funny"},
-  {e:"📊", h:"Poll", a:"Poll = Paul", c:"funny"}
+  {e:"🐍S", h:"Starts with B", a:"Boaz", c:"funny"},
+  {e:"📊", h:"Poll", a:"Paul", c:"funny"}
 ];
 
 let teamCount = 2;
+let isIndividual = false;
 let team = 1;
 let score = 0;
 let time = 60;
@@ -334,7 +336,9 @@ let selectedCategory = "mixed";
 let currentCard = null;
 
 function startGame(){
-  teamCount = parseInt(document.getElementById("teams").value);
+  const teamsValue = document.getElementById("teams").value;
+  isIndividual = teamsValue === "individual";
+  teamCount = isIndividual ? 1 : parseInt(teamsValue);
   selectedCategory = document.getElementById("category").value;
   scores = Array(teamCount).fill(0);
 
@@ -355,7 +359,7 @@ function startRound(){
   score = 0;
   used = [];
 
-  document.getElementById("team").innerText = team;
+  updateTeamDisplay();
 
   nextCard();
 
@@ -364,6 +368,11 @@ function startRound(){
     document.getElementById("time").innerText = time;
     if(time <= 0) endRound();
   },1000);
+}
+
+function updateTeamDisplay(){
+  const el = document.getElementById("teamInfo");
+  el.innerHTML = isIndividual ? "🙋 You" : ("🏆 T" + team);
 }
 
 function nextCard(){
@@ -388,7 +397,7 @@ function nextCard(){
 function revealAnswer(){
   if(!currentCard) return;
 
-  document.getElementById("clue").innerText = " (" + currentCard.a + ")";
+  document.getElementById("clue").innerText = " " + currentCard.a;
 }
 
 function correct(){
@@ -430,6 +439,12 @@ function showResults(){
   document.getElementById("game").classList.remove("show");
   document.getElementById("between").classList.remove("show");
   document.getElementById("end").classList.add("show");
+
+  if(isIndividual){
+    document.getElementById("results").innerHTML = "";
+    document.getElementById("winner").innerText = "Final Score: " + scores[0] + " 🎉";
+    return;
+  }
 
   let table = "";
   let max = 0;
