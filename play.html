@@ -3,9 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Emoji Bible Guess</title>
 
 <style>
+* { -webkit-tap-highlight-color: transparent; }
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -15,6 +20,8 @@ body {
   height: 100dvh; 
   overflow: hidden;
   box-sizing: border-box;
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior-y: none;
 }
 
 #app {
@@ -24,7 +31,9 @@ body {
   height: 100dvh;
   display: flex;
   flex-direction: column;
-  padding: 20px 20px calc(20px + env(safe-area-inset-bottom)); 
+  padding: calc(16px + env(safe-area-inset-top)) 20px calc(20px + env(safe-area-inset-bottom)); 
+  padding-left: calc(20px + env(safe-area-inset-left));
+  padding-right: calc(20px + env(safe-area-inset-right));
   box-sizing: border-box;
 }
 
@@ -72,6 +81,8 @@ button {
   align-items: center;
   justify-content: center;
   gap: 8px;
+  min-height: 44px;
+  touch-action: manipulation;
 }
 
 .primary { background: #00c853; color: white; }
@@ -88,35 +99,47 @@ button {
   padding-top: 10px;
 }
 
-/* CENTERED PLAY AREA (MATCHING SCREENSHOT) */
+/* CENTERED PLAY AREA */
 .game-center-container {
   flex: 1;
   display: flex;
-  flex-direction: row; /* Rows emojis and clues side-by-side if needed, or inline */
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  font-size: 55px; /* Unified large text sizing for center elements */
+  font-size: 55px;
   font-weight: bold;
   text-align: center;
+  min-height: 0;
 }
 
 #emoji {
   display: inline-block;
 }
 
+#hint {
+  display: block;
+  width: 100%;
+  font-size: 22px;
+  font-weight: normal;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+
 #clue {
   display: inline-block;
-  font-size: 55px; /* Matches emoji size exactly as seen in screenshot */
+  font-size: 55px;
 }
 
 /* BOTTOM BUTTON CONTAINER STACK */
 .controls-container {
   display: flex;
   flex-direction: column;
-  gap: 12px; /* Uniform margins between all action item rows */
+  gap: 12px;
   width: 100%;
   margin-bottom: 5px;
+  flex-shrink: 0;
 }
 
 .footer {
@@ -128,7 +151,7 @@ button {
 select {
   width: 100%;
   padding: 12px;
-  font-size: 18px;
+  font-size: 16px; /* prevents iOS auto-zoom on focus */
   margin-top: 5px;
   margin-bottom: 15px;
   border-radius: 10px;
@@ -137,6 +160,53 @@ select {
 
 table { width: 100%; margin-top: 15px; }
 td { padding: 8px; font-size: 18px; }
+
+/* ---------- Small phones ---------- */
+@media (max-width: 359px), (max-height: 600px) {
+  h1 { font-size: 22px; margin-top: 8px; }
+  .info { font-size: 20px; }
+  .game-center-container { font-size: 42px; }
+  #clue { font-size: 42px; }
+  #hint { font-size: 17px; }
+  button { padding: 13px; font-size: 17px; }
+  .card { padding: 16px; }
+}
+
+/* ---------- Landscape phones (short viewport) ---------- */
+@media (max-height: 480px) and (orientation: landscape) {
+  #app { padding-top: calc(8px + env(safe-area-inset-top)); }
+  h1 { font-size: 18px; margin: 4px 0; }
+  .info { font-size: 18px; padding-top: 4px; }
+  .game-center-container { font-size: 34px; gap: 6px; }
+  #clue { font-size: 34px; }
+  #hint { font-size: 15px; margin-top: 2px; }
+  .controls-container { gap: 8px; }
+  button { padding: 10px; font-size: 15px; min-height: 40px; }
+}
+
+/* ---------- Tablet / iPad portrait and up ---------- */
+@media (min-width: 600px) {
+  #app { max-width: 620px; }
+  h1 { font-size: 36px; margin-top: 20px; }
+  .card { padding: 28px; border-radius: 24px; }
+  .info { font-size: 32px; }
+  .game-center-container { font-size: 80px; gap: 18px; }
+  #clue { font-size: 80px; }
+  #hint { font-size: 30px; margin-top: 8px; }
+  button { padding: 20px; font-size: 24px; border-radius: 18px; }
+  select { padding: 14px; font-size: 20px; }
+  .controls-container { gap: 16px; }
+  .footer { gap: 16px; }
+  td { font-size: 20px; }
+}
+
+/* ---------- iPad landscape / large tablets ---------- */
+@media (min-width: 900px) {
+  #app { max-width: 720px; }
+  .game-center-container { font-size: 100px; }
+  #clue { font-size: 100px; }
+  h1 { font-size: 42px; }
+}
 </style>
 </head>
 
@@ -177,9 +247,9 @@ td { padding: 8px; font-size: 18px; }
     <div>🏆 T<span id="team">1</span></div>
   </div>
 
-  <!-- Items wrapped into a unified center flex layout matching Screenshot 2026-07-03 at 1.19.36 AM.png -->
   <div class="game-center-container">
     <span id="emoji">📊</span>
+    <span id="hint"></span>
     <span id="clue"></span>
   </div>
 
@@ -243,14 +313,14 @@ const cards = [
   {e:"✝️🩸🌑", a:"Crucifixion", c:"feasts"},
 
   /* 😂 FUNNY SOUNDS */
-  {e:"🌱✅", a:"Root Truth = Ruth", c:"funny"},
+  {e:"🌱✅", h:"Root Truth", a:"Root Truth = Ruth", c:"funny"},
   {e:"🚫 AHH", a:"No Are = Noah", c:"funny"},
-  {e:"✅🗣️", a:"Done Yell = Daniel", c:"funny"},
+  {e:"✅🗣️", h:"Done Yell", a:"Done Yell = Daniel", c:"funny"},
   {e:"Yester", a:"Esther", c:"funny"},
-  {e:"🤵👰️", a:"Present Tense = Mary", c:"funny"},
+  {e:"🤵👰️", h:"Present Tense", a:"Present Tense = Mary", c:"funny"},
   {e:"Luxurious", a:"Lazarus", c:"funny"},
-  {e:"🐍S", a:"Starts with B = Boaz", c:"funny"},
-  {e:"📊", a:"Poll = Paul", c:"funny"}
+  {e:"🐍S", h:"Starts with B", a:"Starts with B = Boaz", c:"funny"},
+  {e:"📊", h:"Poll", a:"Poll = Paul", c:"funny"}
 ];
 
 let teamCount = 2;
@@ -311,6 +381,7 @@ function nextCard(){
   currentCard = pool[i];
 
   document.getElementById("emoji").innerText = currentCard.e;
+  document.getElementById("hint").innerText = currentCard.h ? ("(" + currentCard.h + ")") : "";
   document.getElementById("clue").innerText = "";
 }
 
