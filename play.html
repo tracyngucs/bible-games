@@ -90,6 +90,7 @@ button {
 .blue { background: #2196f3; color: white; }
 .red { background: #e53935; color: white; }
 .purple { background: #9c27b0; color: white; }
+.brown { background: #795548; color: white; }
 
 .modal-overlay {
   display: none;
@@ -158,6 +159,20 @@ button {
   margin-top: 4px;
 }
 
+#bookName {
+  font-size: 46px;
+  font-weight: bold;
+  text-align: center;
+}
+
+#feedback {
+  font-size: 26px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 14px;
+  min-height: 32px;
+}
+
 #clue {
   display: inline-block;
   font-size: 55px;
@@ -199,6 +214,8 @@ td { padding: 8px; font-size: 18px; }
   .game-center-container { font-size: 42px; }
   #clue { font-size: 42px; }
   #hint { font-size: 17px; }
+  #bookName { font-size: 32px; }
+  #feedback { font-size: 20px; }
   button { padding: 13px; font-size: 17px; }
   .card { padding: 16px; }
 }
@@ -211,6 +228,8 @@ td { padding: 8px; font-size: 18px; }
   .game-center-container { font-size: 34px; gap: 6px; }
   #clue { font-size: 34px; }
   #hint { font-size: 15px; margin-top: 2px; }
+  #bookName { font-size: 26px; }
+  #feedback { font-size: 17px; margin-top: 6px; min-height: 22px; }
   .controls-container { gap: 8px; }
   button { padding: 10px; font-size: 15px; min-height: 40px; }
 }
@@ -224,6 +243,8 @@ td { padding: 8px; font-size: 18px; }
   .game-center-container { font-size: 80px; gap: 18px; }
   #clue { font-size: 80px; }
   #hint { font-size: 30px; margin-top: 8px; }
+  #bookName { font-size: 64px; }
+  #feedback { font-size: 34px; margin-top: 18px; min-height: 42px; }
   button { padding: 20px; font-size: 24px; border-radius: 18px; }
   select { padding: 14px; font-size: 20px; }
   .controls-container { gap: 16px; }
@@ -265,7 +286,8 @@ td { padding: 8px; font-size: 18px; }
         <option value="feasts">🌿 Feasts & Events</option>
         <option value="stories">📜 Bible Stories</option>
         <option value="phrases">💬 Bible Phrases</option>
-        <option value="funny">😂 Funny Sounds</option>
+        <option value="funny">😂 Funny Sounds - Bible Characters</option>
+        <option value="testament">📚 Old or New Testament?</option>
       </select>
 
       <button class="primary" onclick="startGame()">Start Game</button>
@@ -280,14 +302,20 @@ td { padding: 8px; font-size: 18px; }
     <div>⭐ <span id="score">0</span></div>
     <div id="teamInfo">🏆 T<span id="team">1</span></div>
   </div>
+  <div id="categoryDisplay" style="text-align:center; font-size:14px; opacity:0.85; margin-top:2px;"></div>
 
-  <div class="game-center-container">
+  <div class="game-center-container" id="emojiCenter">
     <span id="emoji">📊</span>
     <span id="hint"></span>
     <span id="clue"></span>
   </div>
 
-  <div class="controls-container">
+  <div class="game-center-container" id="testamentCenter" style="display:none; flex-direction:column;">
+    <div id="bookName">Genesis</div>
+    <div id="feedback"></div>
+  </div>
+
+  <div class="controls-container" id="emojiControls">
     <div class="footer">
       <button class="primary" onclick="correct()">✓ Correct</button>
       <button class="secondary" onclick="skip()">⏭ Skip</button>
@@ -296,6 +324,15 @@ td { padding: 8px; font-size: 18px; }
       <button class="blue" onclick="revealAnswer()">👁️ Reveal Answer</button>
       <button class="purple" onclick="openCategoryModal()">🔀 Change Category</button>
     </div>
+    <button class="red" onclick="endGame()">⛔ End Game</button>
+  </div>
+
+  <div class="controls-container" id="testamentControls" style="display:none;">
+    <div class="footer">
+      <button class="brown" onclick="answerTestament('old')">📜 Old Testament</button>
+      <button class="blue" onclick="answerTestament('new')">✝️ New Testament</button>
+    </div>
+    <button class="purple" onclick="openCategoryModal()">🔀 Change Category</button>
     <button class="red" onclick="endGame()">⛔ End Game</button>
   </div>
 </div>
@@ -319,7 +356,8 @@ td { padding: 8px; font-size: 18px; }
       <option value="feasts">🌿 Feasts & Events</option>
       <option value="stories">📜 Bible Stories</option>
       <option value="phrases">💬 Bible Phrases</option>
-      <option value="funny">😂 Funny Sounds</option>
+      <option value="funny">😂 Funny Sounds - Bible Characters</option>
+      <option value="testament">📚 Old or New Testament?</option>
     </select>
     <div class="modal-actions">
       <button class="primary" onclick="applyCategoryChange()">Apply</button>
@@ -400,6 +438,42 @@ const cards = [
   {e:"👀", h:"Look", a:"Luke", c:"funny"}
 ];
 
+const BOOKS = [
+  {name:"Genesis", t:"old"}, {name:"Exodus", t:"old"}, {name:"Leviticus", t:"old"},
+  {name:"Numbers", t:"old"}, {name:"Deuteronomy", t:"old"}, {name:"Joshua", t:"old"},
+  {name:"Judges", t:"old"}, {name:"Ruth", t:"old"}, {name:"1 Samuel", t:"old"},
+  {name:"2 Samuel", t:"old"}, {name:"1 Kings", t:"old"}, {name:"2 Kings", t:"old"},
+  {name:"1 Chronicles", t:"old"}, {name:"2 Chronicles", t:"old"}, {name:"Ezra", t:"old"},
+  {name:"Nehemiah", t:"old"}, {name:"Esther", t:"old"}, {name:"Job", t:"old"},
+  {name:"Psalms", t:"old"}, {name:"Proverbs", t:"old"}, {name:"Ecclesiastes", t:"old"},
+  {name:"Song of Solomon", t:"old"}, {name:"Isaiah", t:"old"}, {name:"Jeremiah", t:"old"},
+  {name:"Lamentations", t:"old"}, {name:"Ezekiel", t:"old"}, {name:"Daniel", t:"old"},
+  {name:"Hosea", t:"old"}, {name:"Joel", t:"old"}, {name:"Amos", t:"old"},
+  {name:"Obadiah", t:"old"}, {name:"Jonah", t:"old"}, {name:"Micah", t:"old"},
+  {name:"Nahum", t:"old"}, {name:"Habakkuk", t:"old"}, {name:"Zephaniah", t:"old"},
+  {name:"Haggai", t:"old"}, {name:"Zechariah", t:"old"}, {name:"Malachi", t:"old"},
+
+  {name:"Matthew", t:"new"}, {name:"Mark", t:"new"}, {name:"Luke", t:"new"},
+  {name:"John", t:"new"}, {name:"Acts", t:"new"}, {name:"Romans", t:"new"},
+  {name:"1 Corinthians", t:"new"}, {name:"2 Corinthians", t:"new"}, {name:"Galatians", t:"new"},
+  {name:"Ephesians", t:"new"}, {name:"Philippians", t:"new"}, {name:"Colossians", t:"new"},
+  {name:"1 Thessalonians", t:"new"}, {name:"2 Thessalonians", t:"new"}, {name:"1 Timothy", t:"new"},
+  {name:"2 Timothy", t:"new"}, {name:"Titus", t:"new"}, {name:"Philemon", t:"new"},
+  {name:"Hebrews", t:"new"}, {name:"James", t:"new"}, {name:"1 Peter", t:"new"},
+  {name:"2 Peter", t:"new"}, {name:"1 John", t:"new"}, {name:"2 John", t:"new"},
+  {name:"3 John", t:"new"}, {name:"Jude", t:"new"}, {name:"Revelation", t:"new"}
+];
+
+const CATEGORY_LABELS = {
+  mixed: "🔀 Mixed",
+  bible: "📖 Bible Characters",
+  feasts: "🌿 Feasts & Events",
+  stories: "📜 Bible Stories",
+  phrases: "💬 Bible Phrases",
+  funny: "😂 Funny Sounds - Bible Characters",
+  testament: "📚 Old or New Testament?"
+};
+
 let teamCount = 2;
 let isIndividual = false;
 let team = 1;
@@ -410,6 +484,8 @@ let used = [];
 let scores = [];
 let selectedCategory = "mixed";
 let currentCard = null;
+let currentBook = null;
+let usedBooks = [];
 
 function startGame(){
   const teamsValue = document.getElementById("teams").value;
@@ -434,12 +510,27 @@ function startRound(){
   time = 60;
   score = 0;
   used = [];
+  usedBooks = [];
 
   updateTeamDisplay();
+  updateModeUI();
 
   nextCard();
 
   resumeTimer();
+}
+
+function isTestamentMode(){
+  return selectedCategory === "testament";
+}
+
+function updateModeUI(){
+  const testament = isTestamentMode();
+  document.getElementById("emojiCenter").style.display = testament ? "none" : "flex";
+  document.getElementById("testamentCenter").style.display = testament ? "flex" : "none";
+  document.getElementById("emojiControls").style.display = testament ? "none" : "flex";
+  document.getElementById("testamentControls").style.display = testament ? "flex" : "none";
+  document.getElementById("categoryDisplay").innerText = CATEGORY_LABELS[selectedCategory] || "";
 }
 
 function resumeTimer(){
@@ -465,7 +556,9 @@ function openCategoryModal(){
 function applyCategoryChange(){
   selectedCategory = document.getElementById("inGameCategory").value;
   used = [];
+  usedBooks = [];
   document.getElementById("categoryModal").classList.remove("show");
+  updateModeUI();
   nextCard();
   resumeTimer();
 }
@@ -476,6 +569,11 @@ function cancelCategoryChange(){
 }
 
 function nextCard(){
+  if(isTestamentMode()){
+    nextBook();
+    return;
+  }
+
   let pool = getCards();
 
   if(used.length === pool.length) used = [];
@@ -492,6 +590,45 @@ function nextCard(){
   document.getElementById("emoji").innerText = currentCard.e;
   document.getElementById("hint").innerText = currentCard.h ? ("(" + currentCard.h + ")") : "";
   document.getElementById("clue").innerText = "";
+
+  document.getElementById("categoryDisplay").innerText =
+    selectedCategory === "mixed" ? (CATEGORY_LABELS[currentCard.c] || "") : (CATEGORY_LABELS[selectedCategory] || "");
+}
+
+function nextBook(){
+  if(usedBooks.length === BOOKS.length) usedBooks = [];
+
+  let i;
+  do {
+    i = Math.floor(Math.random() * BOOKS.length);
+  } while(usedBooks.includes(i));
+
+  usedBooks.push(i);
+
+  currentBook = BOOKS[i];
+
+  document.getElementById("bookName").innerText = currentBook.name;
+  document.getElementById("feedback").innerText = "";
+}
+
+function answerTestament(choice){
+  if(!currentBook) return;
+
+  const feedback = document.getElementById("feedback");
+
+  if(choice === currentBook.t){
+    score++;
+    scores[team-1] = score;
+    document.getElementById("score").innerText = score;
+    feedback.innerText = "✅ Correct!";
+    feedback.style.color = "#00c853";
+  } else {
+    const correctLabel = currentBook.t === "old" ? "Old Testament" : "New Testament";
+    feedback.innerText = "❌ Wrong — it's " + correctLabel;
+    feedback.style.color = "#e53935";
+  }
+
+  setTimeout(nextBook, 800);
 }
 
 function revealAnswer(){
