@@ -89,6 +89,37 @@ button {
 .secondary { background: #ffca28; color: black; }
 .blue { background: #2196f3; color: white; }
 .red { background: #e53935; color: white; }
+.purple { background: #9c27b0; color: white; }
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.modal-overlay.show { display: flex; }
+.modal-box {
+  background: white;
+  color: black;
+  border-radius: 20px;
+  padding: 24px;
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+  box-sizing: border-box;
+}
+.modal-box h2 { margin-top: 0; }
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
 
 /* TOP HEADER INFO BAR */
 .info {
@@ -261,7 +292,10 @@ td { padding: 8px; font-size: 18px; }
       <button class="primary" onclick="correct()">✓ Correct</button>
       <button class="secondary" onclick="skip()">⏭ Skip</button>
     </div>
-    <button class="blue" onclick="revealAnswer()">👁️ Reveal Answer</button>
+    <div class="footer">
+      <button class="blue" onclick="revealAnswer()">👁️ Reveal Answer</button>
+      <button class="purple" onclick="openCategoryModal()">🔀 Change Category</button>
+    </div>
     <button class="red" onclick="endGame()">⛔ End Game</button>
   </div>
 </div>
@@ -272,6 +306,25 @@ td { padding: 8px; font-size: 18px; }
   <div class="card">
     <h2>Pass the phone 📱</h2>
     <button class="blue" onclick="nextTeam()">Start</button>
+  </div>
+</div>
+
+<!-- CHANGE CATEGORY MODAL -->
+<div class="modal-overlay" id="categoryModal">
+  <div class="modal-box">
+    <h2>Change Category</h2>
+    <select id="inGameCategory">
+      <option value="mixed">🔀 Mixed</option>
+      <option value="bible">📖 Bible Characters</option>
+      <option value="feasts">🌿 Feasts & Events</option>
+      <option value="stories">📜 Bible Stories</option>
+      <option value="phrases">💬 Bible Phrases</option>
+      <option value="funny">😂 Funny Sounds</option>
+    </select>
+    <div class="modal-actions">
+      <button class="primary" onclick="applyCategoryChange()">Apply</button>
+      <button class="secondary" onclick="cancelCategoryChange()">Cancel</button>
+    </div>
   </div>
 </div>
 
@@ -309,7 +362,7 @@ const cards = [
   {e:"🪽🤱🌠🐑", a:"Jesus", c:"bible"},
   {e:"💰💋", a:"Judas", c:"bible"},
   {e:"🎣🗝️⛪", a:"Peter", c:"bible"},
-  {e:"🍇🕵️‍♂️", a:"Joshua & Caleb", c:"bible"},
+  {e:"🌈🍇🕵️‍♂️🕵️‍♂️", h:"2 out of 10", a:"Joshua & Caleb", c:"bible"},
   {e:"🌳👨💰", a:"Zacchaeus", c:"bible"},
   {e:"🗣️🎺🔥", a:"Gideon", c:"bible"},
 
@@ -327,7 +380,7 @@ const cards = [
   {e:"🤱⭐🐑", a:"Birth of Jesus", c:"stories"},
   {e:"💧➡️🍷", a:"Jesus turns water into wine", c:"stories"},
   {e:"🌊👣", a:"Peter walks on water", c:"stories"},
-  {e:"🏃💰🤗", a:"Parable of the Prodigal Son", c:"stories"},
+  {e:"🐖🏃💰🤗", a:"Parable of the Prodigal Son", c:"stories"},
   {e:"🍞🍷👥", a:"Last Supper", c:"stories"},
   {e:"👬🎤🎶⛓️‍💥", a:"Paul & Silas in prison", c:"stories"},
 
@@ -386,6 +439,11 @@ function startRound(){
 
   nextCard();
 
+  resumeTimer();
+}
+
+function resumeTimer(){
+  clearInterval(timer);
   timer = setInterval(()=>{
     time--;
     document.getElementById("time").innerText = time;
@@ -396,6 +454,25 @@ function startRound(){
 function updateTeamDisplay(){
   const el = document.getElementById("teamInfo");
   el.innerHTML = isIndividual ? "🙋 You" : ("🏆 T" + team);
+}
+
+function openCategoryModal(){
+  clearInterval(timer);
+  document.getElementById("inGameCategory").value = selectedCategory;
+  document.getElementById("categoryModal").classList.add("show");
+}
+
+function applyCategoryChange(){
+  selectedCategory = document.getElementById("inGameCategory").value;
+  used = [];
+  document.getElementById("categoryModal").classList.remove("show");
+  nextCard();
+  resumeTimer();
+}
+
+function cancelCategoryChange(){
+  document.getElementById("categoryModal").classList.remove("show");
+  resumeTimer();
 }
 
 function nextCard(){
