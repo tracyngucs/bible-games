@@ -131,6 +131,20 @@ button {
   padding-top: 10px;
 }
 
+#teamScoreboard {
+  display: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 6px;
+}
+#teamScoreboard .ts-current {
+  color: #00c853;
+  text-decoration: underline;
+}
+
 /* CENTERED PLAY AREA */
 .game-center-container {
   flex: 1;
@@ -165,12 +179,82 @@ button {
   text-align: center;
 }
 
-#feedback {
+.feedback-text {
   font-size: 26px;
   font-weight: bold;
   text-align: center;
   margin-top: 14px;
   min-height: 32px;
+}
+
+.quiz-question {
+  font-size: 34px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.quiz-header {
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.75;
+  margin-bottom: 8px;
+}
+
+.quiz-detail {
+  font-size: 18px;
+  font-weight: normal;
+  opacity: 0.85;
+  margin-top: 8px;
+  line-height: 1.35;
+}
+
+#quizName.quiz-statement {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.quiz-options .footer {
+  margin-bottom: 12px;
+}
+.quiz-options button {
+  font-size: 17px;
+  white-space: normal;
+  line-height: 1.2;
+}
+
+#triviaRoundBanner {
+  display: none;
+  text-align: center;
+  margin-bottom: 14px;
+}
+#roundOwnerLabel {
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+#answeringLabel {
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 3px;
+}
+#answeringLabel.steal {
+  color: #ffca28;
+}
+#questionProgress {
+  font-size: 13px;
+  opacity: 0.7;
+  margin-top: 3px;
+}
+#betweenRecap {
+  font-size: 15px;
+  opacity: 0.85;
+  margin-top: -6px;
+  margin-bottom: 14px;
 }
 
 #clue {
@@ -215,7 +299,16 @@ td { padding: 8px; font-size: 18px; }
   #clue { font-size: 42px; }
   #hint { font-size: 17px; }
   #bookName { font-size: 32px; }
-  #feedback { font-size: 20px; }
+  .feedback-text { font-size: 20px; }
+  .quiz-question { font-size: 24px; }
+  .quiz-header { font-size: 12px; margin-bottom: 5px; }
+  .quiz-detail { font-size: 13px; margin-top: 5px; }
+  #quizName.quiz-statement { font-size: 17px; }
+  .quiz-options button { font-size: 14px; }
+  #roundOwnerLabel { font-size: 11px; }
+  #answeringLabel { font-size: 17px; }
+  #questionProgress { font-size: 11px; }
+  #teamScoreboard { font-size: 14px; gap: 8px; }
   button { padding: 13px; font-size: 17px; }
   .card { padding: 16px; }
 }
@@ -229,7 +322,17 @@ td { padding: 8px; font-size: 18px; }
   #clue { font-size: 34px; }
   #hint { font-size: 15px; margin-top: 2px; }
   #bookName { font-size: 26px; }
-  #feedback { font-size: 17px; margin-top: 6px; min-height: 22px; }
+  .feedback-text { font-size: 17px; margin-top: 6px; min-height: 22px; }
+  .quiz-question { font-size: 19px; }
+  .quiz-header { font-size: 11px; margin-bottom: 4px; }
+  .quiz-detail { font-size: 12px; margin-top: 4px; }
+  #quizName.quiz-statement { font-size: 15px; }
+  .quiz-options button { font-size: 12px; padding: 8px; }
+  #triviaRoundBanner { margin-bottom: 8px; }
+  #roundOwnerLabel { font-size: 10px; }
+  #answeringLabel { font-size: 14px; }
+  #questionProgress { font-size: 10px; }
+  #teamScoreboard { font-size: 13px; gap: 6px; margin-top: 2px; }
   .controls-container { gap: 8px; }
   button { padding: 10px; font-size: 15px; min-height: 40px; }
 }
@@ -244,7 +347,16 @@ td { padding: 8px; font-size: 18px; }
   #clue { font-size: 80px; }
   #hint { font-size: 30px; margin-top: 8px; }
   #bookName { font-size: 64px; }
-  #feedback { font-size: 34px; margin-top: 18px; min-height: 42px; }
+  .feedback-text { font-size: 34px; margin-top: 18px; min-height: 42px; }
+  .quiz-question { font-size: 46px; }
+  .quiz-header { font-size: 20px; margin-bottom: 12px; }
+  .quiz-detail { font-size: 24px; margin-top: 12px; }
+  #quizName.quiz-statement { font-size: 32px; }
+  .quiz-options button { font-size: 22px; }
+  #roundOwnerLabel { font-size: 18px; }
+  #answeringLabel { font-size: 30px; }
+  #questionProgress { font-size: 17px; }
+  #teamScoreboard { font-size: 24px; gap: 20px; }
   button { padding: 20px; font-size: 24px; border-radius: 18px; }
   select { padding: 14px; font-size: 20px; }
   .controls-container { gap: 16px; }
@@ -288,6 +400,7 @@ td { padding: 8px; font-size: 18px; }
         <option value="phrases">💬 Bible Phrases</option>
         <option value="funny">😂 Funny Sounds - Bible Characters</option>
         <option value="testament">📚 Old or New Testament?</option>
+        <option value="trivia">🧠 Bible Trivia</option>
       </select>
 
       <button class="primary" onclick="startGame()">Start Game</button>
@@ -299,9 +412,10 @@ td { padding: 8px; font-size: 18px; }
 <div id="game" class="screen">
   <div class="info">
     <div>⏱ <span id="time">60</span></div>
-    <div>⭐ <span id="score">0</span></div>
+    <div id="soloScoreWrap">⭐ <span id="score">0</span></div>
     <div id="teamInfo">🏆 T<span id="team">1</span></div>
   </div>
+  <div id="teamScoreboard" style="display:none;"></div>
   <div id="categoryDisplay" style="text-align:center; font-size:14px; opacity:0.85; margin-top:2px;"></div>
 
   <div class="game-center-container" id="emojiCenter">
@@ -312,7 +426,21 @@ td { padding: 8px; font-size: 18px; }
 
   <div class="game-center-container" id="testamentCenter" style="display:none; flex-direction:column;">
     <div id="bookName">Genesis</div>
-    <div id="feedback"></div>
+    <div class="feedback-text" id="feedback"></div>
+  </div>
+
+  <div class="game-center-container" id="triviaCenter" style="display:none; flex-direction:column;">
+    <div id="triviaRoundBanner">
+      <div id="roundOwnerLabel"></div>
+      <div id="answeringLabel"></div>
+      <div id="questionProgress"></div>
+    </div>
+    <div class="quiz-question" id="triviaQuestion">
+      <div class="quiz-header" id="quizHeader" style="display:none;"></div>
+      <div id="quizName">Question</div>
+      <div class="quiz-detail" id="quizDetail" style="display:none;"></div>
+    </div>
+    <div class="feedback-text" id="triviaFeedback"></div>
   </div>
 
   <div class="controls-container" id="emojiControls">
@@ -335,11 +463,28 @@ td { padding: 8px; font-size: 18px; }
     <button class="purple" onclick="openCategoryModal()">🔀 Change Category</button>
     <button class="red" onclick="endGame()">⛔ End Game</button>
   </div>
+
+  <div class="controls-container quiz-options" id="triviaControls" style="display:none;">
+    <div class="footer">
+      <button class="primary" id="opt0" onclick="answerTrivia(0)">Option 1</button>
+      <button class="secondary" id="opt1" onclick="answerTrivia(1)">Option 2</button>
+    </div>
+    <div class="footer" id="optRow2">
+      <button class="blue" id="opt2" onclick="answerTrivia(2)">Option 3</button>
+      <button class="brown" id="opt3" onclick="answerTrivia(3)">Option 4</button>
+    </div>
+    <div class="footer">
+      <button class="blue" onclick="openPauseModal()">⏸ Pause</button>
+      <button class="purple" onclick="openCategoryModal()">🔀 Change Category</button>
+    </div>
+    <button class="red" onclick="endGame()">⛔ End Game</button>
+  </div>
 </div>
 
 <!-- BETWEEN -->
 <div id="between" class="screen" style="justify-content: center;">
   <h1>Team <span id="nextTeam">2</span></h1>
+  <div id="betweenRecap"></div>
   <div class="card">
     <h2>Pass the phone 📱</h2>
     <button class="blue" onclick="nextTeam()">Start</button>
@@ -358,10 +503,22 @@ td { padding: 8px; font-size: 18px; }
       <option value="phrases">💬 Bible Phrases</option>
       <option value="funny">😂 Funny Sounds - Bible Characters</option>
       <option value="testament">📚 Old or New Testament?</option>
+      <option value="trivia">🧠 Bible Trivia</option>
     </select>
     <div class="modal-actions">
       <button class="primary" onclick="applyCategoryChange()">Apply</button>
       <button class="secondary" onclick="cancelCategoryChange()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAUSE MODAL -->
+<div class="modal-overlay" id="pauseModal">
+  <div class="modal-box">
+    <h2>⏸ Paused</h2>
+    <div id="pauseSummary" style="margin-bottom:14px; font-size:15px; opacity:0.85;"></div>
+    <div class="modal-actions">
+      <button class="primary" onclick="resumeGame()">▶ Resume</button>
     </div>
   </div>
 </div>
@@ -464,6 +621,173 @@ const BOOKS = [
   {name:"3 John", t:"new"}, {name:"Jude", t:"new"}, {name:"Revelation", t:"new"}
 ];
 
+const TRIVIA = [
+  {topics:["Noah"], q:"Who built the ark?", options:["Noah","Moses","Abraham","Joseph"], a:0},
+  {q:"How many days and nights did it rain during the flood?", options:["7","40","100","365"], a:1},
+  {topics:["Jonah"], q:"Who was swallowed by a great fish?", options:["Jonah","Elijah","Daniel","Peter"], a:0},
+  {topics:["Jesus"], q:"How many disciples did Jesus have?", options:["7","10","12","14"], a:2},
+  {topics:["Samson"], q:"Who was the strongest man in the Bible, known for his hair?", options:["David","Samson","Goliath","Saul"], a:1},
+  {q:"What did God create on the first day?", options:["Animals","Light","Man","Plants"], a:1},
+  {topics:["Jesus","Judas"], q:"Who betrayed Jesus for 30 pieces of silver?", options:["Peter","Thomas","Judas","John"], a:2},
+  {topics:["Daniel"], q:"Who was thrown into a den of lions?", options:["Daniel","David","Elijah","Job"], a:0},
+  {q:"What was the first book of the Bible?", options:["Exodus","Genesis","Leviticus","Psalms"], a:1},
+  {topics:["Moses"], q:"Who led the Israelites out of Egypt?", options:["Moses","Aaron","Joshua","Abraham"], a:0},
+  {q:"How many plagues did God send on Egypt?", options:["7","10","12","3"], a:1},
+  {topics:["Jesus","Mary"], q:"Who was the mother of Jesus?", options:["Elizabeth","Martha","Mary","Ruth"], a:2},
+  {topics:["Jesus"], q:"What did Jesus turn water into?", options:["Oil","Wine","Milk","Honey"], a:1},
+  {topics:["Solomon"], q:"Who was known for his great wisdom and wealth as king of Israel?", options:["David","Solomon","Saul","Hezekiah"], a:1},
+  {topics:["Jesus","Peter"], q:"Who denied knowing Jesus three times?", options:["Judas","John","Peter","Andrew"], a:2},
+  {q:"How many books are in the New Testament?", options:["27","39","66","12"], a:0},
+  {topics:["Goliath","David"], q:"Who killed the giant Goliath?", options:["Saul","Samson","David","Solomon"], a:2},
+  {q:"On what day did God rest after creation?", options:["5th","6th","7th","1st"], a:2},
+  {topics:["Joseph"], q:"Who was sold into slavery by his brothers?", options:["Benjamin","Joseph","Reuben","Judah"], a:1},
+  {topics:["Moses"], q:"What sea did Moses part?", options:["Dead Sea","Red Sea","Sea of Galilee","Mediterranean Sea"], a:1},
+  {topics:["Moses"], q:"Who received the Ten Commandments from God?", options:["Moses","Aaron","Joshua","Abraham"], a:0},
+  {topics:["David"], q:"Who started as a shepherd boy and later became king?", options:["Saul","David","Solomon","Samuel"], a:1},
+  {topics:["Joseph"], q:"Who was given a special colourful coat by his father?", options:["Benjamin","Reuben","Joseph","Judah"], a:2},
+  {topics:["Naomi","Ruth"], q:"Which woman stayed with her mother-in-law Naomi instead of leaving her?", options:["Ruth","Esther","Rachel","Leah"], a:0},
+  {topics:["Esther"], q:"Who became queen and bravely helped save her people?", options:["Ruth","Esther","Deborah","Rahab"], a:1},
+  {topics:["Jesus","Paul"], q:"Who was travelling to Damascus when Jesus appeared to him?", options:["Peter","Paul","John","Barnabas"], a:1},
+  {topics:["Jesus","Paul"], q:"Who used to persecute Christians before becoming a follower of Jesus?", options:["Paul","Peter","Silas","Timothy"], a:0},
+  {topics:["Jesus","Peter"], q:"Which disciple walked on water toward Jesus?", options:["Peter","John","Andrew","Thomas"], a:0},
+  {topics:["John the Baptist","Jesus"], q:"Who baptized Jesus in the Jordan River?", options:["Peter","John the Baptist","Andrew","Philip"], a:1},
+  {topics:["John the Baptist"], q:"Who wore clothing made of camel's hair and ate locusts and wild honey?", options:["Elijah","John the Baptist","Elisha","Samuel"], a:1},
+  {topics:["Elijah"], q:"Which prophet challenged the prophets of Baal on Mount Carmel?", options:["Elisha","Elijah","Isaiah","Jeremiah"], a:1},
+  {topics:["Elijah"], q:"Which prophet was taken up to heaven in a whirlwind?", options:["Elisha","Elijah","Enoch","Moses"], a:1},
+  {topics:["Elijah","Elisha"], q:"Who asked Elijah for a double portion of his spirit?", options:["Elisha","Gehazi","Obadiah","Jehu"], a:0},
+  {topics:["Elisha"], q:"Which prophet made an iron axe head float on water?", options:["Elijah","Elisha","Samuel","Daniel"], a:1},
+  {topics:["Jonah"], q:"Who finally went to preach to the people of Nineveh?", options:["Jonah","Nahum","Amos","Hosea"], a:0},
+  {topics:["Gideon"], q:"Who defeated a huge enemy army with only 300 men?", options:["Samson","Gideon","Joshua","David"], a:1},
+  {topics:["Gideon"], q:"Who asked God for signs involving a fleece?", options:["Gideon","Samson","Barak","Ehud"], a:0},
+  {topics:["Abraham"], q:"Who was told by God to leave his homeland and go to a land God would show him?", options:["Abraham","Isaac","Jacob","Lot"], a:0},
+  {topics:["Abraham","Isaac"], q:"Who became the father of Isaac even though he and his wife were very old?", options:["Abraham","Jacob","Lot","Noah"], a:0},
+  {topics:["Jesus"], q:"Who was born in Bethlehem and laid in a manger?", options:["John the Baptist","Jesus","Moses","Samuel"], a:1},
+  {topics:["Jesus"], q:"Who fed more than 5,000 people with five loaves and two fish?", options:["Moses","Elijah","Jesus","Peter"], a:2},
+  {topics:["Zacchaeus","Jesus"], q:"Who climbed a tree because he was too short to see Jesus?", options:["Zacchaeus","Nicodemus","Matthew","Bartimaeus"], a:0},
+  {topics:["Lazarus","Jesus"], q:"Who had been dead for four days when Jesus called him out of the tomb?", options:["Lazarus","Jairus' daughter","The widow's son","Stephen"], a:0},
+  {topics:["Jesus","John"], q:"Which disciple is described as \"the disciple whom Jesus loved\"?", options:["Peter","John","James","Andrew"], a:1},
+  {topics:["Jesus","Mary","John"], q:"Which disciple stood near the cross with Mary, Jesus' mother?", options:["Peter","Thomas","John","Judas"], a:2},
+  {topics:["Samuel"], q:"Who heard God calling his name when he was still a boy?", options:["David","Samuel","Josiah","Timothy"], a:1},
+  {topics:["Nicodemus","Jesus"], q:"Who secretly came to speak with Jesus at night?", options:["Nicodemus","Zacchaeus","Nathanael","Simon"], a:0},
+
+  /* 💬 WHO SAID IT? */
+  {topics:["Isaiah"], q:"Who said, \"Here I am. Send me!\" when God asked who He should send?", options:["Isaiah","Moses","Samuel","Abraham"], a:0},
+  {topics:["Samuel"], q:"Who said, \"Speak, for your servant is listening\"?", options:["Samuel","Isaiah","David","Eli"], a:0},
+  {topics:["Ruth"], q:"Who said, \"Where you go I will go\"?", options:["Ruth","Esther","Naomi","Rachel"], a:0},
+  {topics:["Cain"], q:"Who said, \"Am I my brother's keeper?\"?", options:["Cain","Abel","Esau","Ham"], a:0},
+  {topics:["Peter"], q:"Who said, \"You are the Christ, the Son of the living God\"?", options:["Peter","John","Thomas","Nicodemus"], a:0},
+  {topics:["Nicodemus"], q:"Who said, \"How can a man be born when he is old?\"?", options:["Nicodemus","Zacchaeus","Peter","John"], a:0},
+  {topics:["Esther"], q:"Who said, \"If I perish, I perish\"?", options:["Esther","Ruth","Deborah","Rahab"], a:0},
+  {topics:["Peter"], q:"Who said, \"I do not know the man!\"?", options:["Peter","Judas","Thomas","John"], a:0},
+  {topics:["Abraham","Isaac"], q:"Who said, \"Here I am!\" when God called him to sacrifice his son Isaac?", options:["Abraham","Isaac","Moses","Samuel"], a:0},
+  {topics:["Lazarus","Jesus"], q:"Who said, \"Lazarus, come out!\"?", options:["Jesus","Peter","John","Martha"], a:0},
+
+  /* ✨ MORE GUESS WHO */
+  {topics:["Ezekiel"], q:"Which prophet saw a vision of a valley of dry bones coming back to life?", options:["Ezekiel","Elijah","Isaiah","Daniel"], a:0},
+  {topics:["Elijah"], q:"What did God send to bring Elijah bread and meat while he hid by the brook Cherith?", options:["Ravens","Angels","Doves","Locusts"], a:0},
+  {topics:["David","Saul"], q:"Who played the harp to soothe King Saul's troubled spirit?", options:["David","Solomon","Asaph","Elisha"], a:0},
+  {topics:["Mary","Martha","Jesus"], q:"When Jesus visited Martha and Mary's home, who chose to sit at His feet and listen instead of helping with the housework?", options:["Mary","Martha","Ruth","Naomi"], a:0},
+  {topics:["Prodigal Son"], q:"In the parable of the prodigal son, how did the father react when he saw his son returning home?", options:["He ran to embrace him","He turned him away","He made him work as a servant","He ignored him"], a:0},
+  {requires:"raised-before-jesus", topics:["Lazarus","Jesus","John"], q:"Who was never resurrected?", options:["Lazarus","Jairus' daughter","The widow's son","John, the disciple Jesus loved"], a:3},
+  {topics:["Sarah"], q:"Who laughed when she heard she would have a baby in her old age?", options:["Sarah","Rebekah","Hannah","Elizabeth"], a:0},
+  {topics:["Jacob"], q:"Who dreamed about a ladder reaching from earth to heaven?", options:["Abraham","Isaac","Jacob","Joseph"], a:2},
+  {topics:["Peter"], q:"Who found a coin inside a fish's mouth, as Jesus instructed him?", options:["Peter","Andrew","Matthew","John"], a:0},
+  {topics:["Peter"], q:"Who cut off the ear of the high priest's servant?", options:["Peter","Judas","Thomas","Malchus"], a:0},
+  {topics:["Joseph"], q:"Who was both a prisoner and eventually a ruler in Egypt?", options:["Joseph","Moses","Daniel","Joshua"], a:0},
+  {topics:["Thomas"], q:"Which disciple said he wouldn't believe Jesus had risen unless he saw the wounds?", options:["Peter","Thomas","Andrew","Philip"], a:1},
+  {topics:["Matthias"], q:"Who was chosen to replace Judas among the Twelve?", options:["Barnabas","Matthias","Silas","Timothy"], a:1},
+  {topics:["Moses"], q:"Who saw a burning bush that wasn't being burned up?", options:["Moses","Aaron","Joshua","Abraham"], a:0},
+  {topics:["Solomon"], q:"What did Solomon ask God for?", options:["Wealth","Long life","Wisdom","Power"], a:2},
+  {topics:["Job"], q:"Who lost almost everything he had but continued to wrestle with his faith in God?", options:["Job","David","Daniel","Elijah"], a:0},
+
+  /* 📖 OLD OR NEW TESTAMENT? */
+  {topics:["Noah"], header:"Old or New Testament?", name:"Noah", options:["Old Testament","New Testament"], a:0},
+  {topics:["Abraham"], header:"Old or New Testament?", name:"Abraham", options:["Old Testament","New Testament"], a:0},
+  {topics:["Moses"], header:"Old or New Testament?", name:"Moses", options:["Old Testament","New Testament"], a:0},
+  {topics:["Joshua"], header:"Old or New Testament?", name:"Joshua", options:["Old Testament","New Testament"], a:0},
+  {topics:["Samson"], header:"Old or New Testament?", name:"Samson", options:["Old Testament","New Testament"], a:0},
+  {topics:["Ruth"], header:"Old or New Testament?", name:"Ruth", options:["Old Testament","New Testament"], a:0},
+  {topics:["David"], header:"Old or New Testament?", name:"David", options:["Old Testament","New Testament"], a:0},
+  {topics:["Solomon"], header:"Old or New Testament?", name:"Solomon", options:["Old Testament","New Testament"], a:0},
+  {topics:["Elijah"], header:"Old or New Testament?", name:"Elijah", options:["Old Testament","New Testament"], a:0},
+  {topics:["Daniel"], header:"Old or New Testament?", name:"Daniel", options:["Old Testament","New Testament"], a:0},
+  {topics:["Esther"], header:"Old or New Testament?", name:"Esther", options:["Old Testament","New Testament"], a:0},
+  {topics:["Jonah"], header:"Old or New Testament?", name:"Jonah", options:["Old Testament","New Testament"], a:0},
+  {topics:["Job"], header:"Old or New Testament?", name:"Job", options:["Old Testament","New Testament"], a:0},
+  {topics:["Isaiah"], header:"Old or New Testament?", name:"Isaiah", options:["Old Testament","New Testament"], a:0},
+  {topics:["Gideon"], header:"Old or New Testament?", name:"Gideon", options:["Old Testament","New Testament"], a:0},
+  {topics:["Jesus"], header:"Old or New Testament?", name:"Jesus", options:["Old Testament","New Testament"], a:1},
+  {topics:["Peter"], header:"Old or New Testament?", name:"Peter", options:["Old Testament","New Testament"], a:1},
+  {topics:["Paul"], header:"Old or New Testament?", name:"Paul", options:["Old Testament","New Testament"], a:1},
+  {topics:["John the Baptist"], header:"Old or New Testament?", name:"John the Baptist", options:["Old Testament","New Testament"], a:1},
+  {topics:["Lazarus"], header:"Old or New Testament?", name:"Lazarus", options:["Old Testament","New Testament"], a:1},
+  {topics:["Zacchaeus"], header:"Old or New Testament?", name:"Zacchaeus", options:["Old Testament","New Testament"], a:1},
+  {topics:["Nicodemus"], header:"Old or New Testament?", name:"Nicodemus", options:["Old Testament","New Testament"], a:1},
+  {topics:["Thomas"], header:"Old or New Testament?", name:"Thomas", options:["Old Testament","New Testament"], a:1},
+  {topics:["Matthew"], header:"Old or New Testament?", name:"Matthew", options:["Old Testament","New Testament"], a:1},
+  {topics:["Timothy"], header:"Old or New Testament?", name:"Timothy", options:["Old Testament","New Testament"], a:1},
+  {topics:["Luke"], header:"Old or New Testament?", name:"Luke", options:["Old Testament","New Testament"], a:1},
+  {topics:["Judas Iscariot"], header:"Old or New Testament?", name:"Judas Iscariot", options:["Old Testament","New Testament"], a:1},
+  {topics:["Mary Magdalene"], header:"Old or New Testament?", name:"Mary Magdalene", options:["Old Testament","New Testament"], a:1},
+  {topics:["Barnabas"], header:"Old or New Testament?", name:"Barnabas", options:["Old Testament","New Testament"], a:1},
+  {topics:["Stephen"], header:"Old or New Testament?", name:"Stephen", options:["Old Testament","New Testament"], a:1},
+  {topics:["Joseph"], header:"Old or New Testament?", name:"Joseph", detail:"who was sold into slavery by his brothers", options:["Old Testament","New Testament"], a:0},
+  {topics:["Joseph","Jesus","Mary"], header:"Old or New Testament?", name:"Joseph", detail:"the husband of Mary and earthly father of Jesus", options:["Old Testament","New Testament"], a:1},
+  {topics:["Jesus","Mary"], header:"Old or New Testament?", name:"Mary", detail:"the mother of Jesus", options:["Old Testament","New Testament"], a:1},
+  {topics:["James","John"], header:"Old or New Testament?", name:"James", detail:"the brother of the apostle John", options:["Old Testament","New Testament"], a:1},
+  {topics:["John"], header:"Old or New Testament?", name:"John", detail:"the apostle who wrote the Gospel of John", options:["Old Testament","New Testament"], a:1},
+  {topics:["John the Baptist","Zechariah"], header:"Old or New Testament?", name:"Zechariah", detail:"not John the Baptist's father", options:["Old Testament","New Testament"], a:0},
+  {topics:["John the Baptist","Zechariah"], header:"Old or New Testament?", name:"Zechariah", detail:"the priest struck mute, father of John the Baptist", options:["Old Testament","New Testament"], a:1},
+  {topics:["Simeon","Jacob"], header:"Old or New Testament?", name:"Simeon", detail:"one of the twelve sons of Jacob", options:["Old Testament","New Testament"], a:0},
+  {topics:["Simeon","Jesus"], header:"Old or New Testament?", name:"Simeon", detail:"who blessed baby Jesus in the temple", options:["Old Testament","New Testament"], a:1},
+  {topics:["Melchizedek"], header:"Old or New Testament?", name:"Melchizedek", options:["Old Testament","New Testament"], a:0},
+  {topics:["Mephibosheth"], header:"Old or New Testament?", name:"Mephibosheth", options:["Old Testament","New Testament"], a:0},
+  {topics:["Obadiah"], header:"Old or New Testament?", name:"Obadiah", options:["Old Testament","New Testament"], a:0},
+  {topics:["Huldah"], header:"Old or New Testament?", name:"Huldah", options:["Old Testament","New Testament"], a:0},
+  {topics:["Barak"], header:"Old or New Testament?", name:"Barak", options:["Old Testament","New Testament"], a:0},
+  {topics:["Silas"], header:"Old or New Testament?", name:"Silas", options:["Old Testament","New Testament"], a:1},
+  {topics:["Priscilla"], header:"Old or New Testament?", name:"Priscilla", options:["Old Testament","New Testament"], a:1},
+  {topics:["Tabitha"], header:"Old or New Testament?", name:"Tabitha", detail:"also called Dorcas", options:["Old Testament","New Testament"], a:1},
+  {topics:["Philemon"], header:"Old or New Testament?", name:"Philemon", options:["Old Testament","New Testament"], a:1},
+
+  /* ✅❌ TRUE OR FALSE? */
+  {topics:["Moses","Noah"], header:"True or False?", name:"Moses built the ark.", options:["True","False"], a:1, explanation:"Noah built the ark"},
+  {topics:["Daniel","David"], header:"True or False?", name:"David was thrown into the lions' den.", options:["True","False"], a:1, explanation:"Daniel was thrown into the lions' den"},
+  {topics:["Goliath","Daniel","David"], header:"True or False?", name:"Daniel defeated Goliath.", options:["True","False"], a:1, explanation:"David defeated Goliath"},
+  {topics:["Jonah"], header:"True or False?", name:"Jonah tried to run away from what God told him to do.", options:["True","False"], a:0},
+  {topics:["Gideon"], header:"True or False?", name:"Gideon defeated a much larger army with only 300 men.", options:["True","False"], a:0},
+  {topics:["Esther","Ruth"], header:"True or False?", name:"Ruth was Esther's sister.", options:["True","False"], a:1, explanation:"They are not related"},
+  {topics:["Samuel"], header:"True or False?", name:"Samuel first heard God calling him when he was a boy.", options:["True","False"], a:0},
+  {topics:["Jesus","Paul"], header:"True or False?", name:"Paul was one of Jesus' original twelve disciples.", options:["True","False"], a:1, explanation:"Paul became an apostle later; he wasn't one of the original twelve"},
+  {topics:["Jesus","Peter"], header:"True or False?", name:"Peter denied knowing Jesus three times.", options:["True","False"], a:0},
+  {topics:["Nicodemus","Jesus"], header:"True or False?", name:"Nicodemus came to speak to Jesus at night.", options:["True","False"], a:0},
+  {topics:["Elijah"], header:"True or False?", name:"Elijah challenged the prophets of Baal.", options:["True","False"], a:0},
+  {topics:["Elijah","Elisha"], header:"True or False?", name:"Elisha was Elijah's successor.", options:["True","False"], a:0},
+  {topics:["Abraham","Joseph","Jacob"], header:"True or False?", name:"Abraham was Joseph's father.", options:["True","False"], a:1, explanation:"Jacob was Joseph's father"},
+  {topics:["Goliath","Samson","David"], header:"True or False?", name:"Samson defeated Goliath.", options:["True","False"], a:1, explanation:"David defeated Goliath"},
+  {topics:["John the Baptist","Jesus"], header:"True or False?", name:"John the Baptist was one of Jesus' twelve disciples.", options:["True","False"], a:1, explanation:"John the Baptist was a separate prophet, not one of the twelve"},
+  {topics:["Zacchaeus"], header:"True or False?", name:"Zacchaeus was a fisherman.", options:["True","False"], a:1, explanation:"Zacchaeus was a tax collector"},
+  {topics:["Peter"], header:"True or False?", name:"Peter was a fisherman.", options:["True","False"], a:0},
+  {topics:["Jesus","Paul"], header:"True or False?", name:"Paul used to persecute followers of Jesus.", options:["True","False"], a:0},
+  {topics:["Jesus"], header:"True or False?", name:"Jesus fed thousands of people using five loaves and two fish.", options:["True","False"], a:0},
+  {topics:["Joseph"], header:"True or False?", name:"Joseph's brothers were jealous of him.", options:["True","False"], a:0},
+  {topics:["Elijah"], header:"True or False?", name:"Elijah was taken up to heaven in a whirlwind.", options:["True","False"], a:0},
+  {topics:["Elijah","Moses","Jesus"], header:"True or False?", name:"Elijah appeared with Moses at Jesus' Transfiguration.", options:["True","False"], a:0},
+  {topics:["Moses"], header:"True or False?", name:"Moses is mentioned in both the Old and New Testaments.", options:["True","False"], a:0},
+  {topics:["Abraham"], header:"True or False?", name:"Abraham is mentioned in the New Testament.", options:["True","False"], a:0},
+  {topics:["David"], header:"True or False?", name:"David wrote every Psalm in the Bible.", options:["True","False"], a:1, explanation:"Other authors, such as Asaph and the sons of Korah, also wrote Psalms"},
+  {topics:["Gideon"], header:"True or False?", name:"Gideon initially had more than 300 men in his army.", options:["True","False"], a:0},
+  {topics:["Esther"], header:"True or False?", name:"Esther's Hebrew name was Hadassah.", options:["True","False"], a:0},
+  {topics:["Samuel","David"], header:"True or False?", name:"Samuel anointed David as king.", options:["True","False"], a:0},
+  {topics:["Saul","Paul"], header:"True or False?", name:"Paul was originally known as Saul.", options:["True","False"], a:0},
+  {topics:["Peter","Simon"], header:"True or False?", name:"Peter's original name was Simon.", options:["True","False"], a:0},
+  {topics:["Lazarus","Jesus"], header:"True or False?", name:"Lazarus had already been in the tomb for four days when Jesus arrived.", options:["True","False"], a:0},
+  {topics:["Nicodemus","Jesus"], header:"True or False?", name:"Nicodemus helped with Jesus' burial.", options:["True","False"], a:0},
+  {topics:["Solomon"], header:"True or False?", name:"King Solomon actually cut the baby in half to settle the dispute between two women claiming to be its mother.", options:["True","False"], a:1, explanation:"He only threatened to, to reveal the true mother — she begged him to spare the child instead"},
+  {topics:["David","Saul","Absalom"], header:"True or False?", name:"Both King Saul and David's own son Absalom, at different times, tried to kill David.", options:["True","False"], a:0},
+  {id:"raised-before-jesus", topics:["Jesus"], header:"True or False?", name:"Someone was raised from the dead even before Jesus' own resurrection.", options:["True","False"], a:0, explanation:"e.g. Lazarus, Jairus' daughter, and the widow's son at Nain were all raised before Jesus' resurrection"}
+];
+
 const CATEGORY_LABELS = {
   mixed: "🔀 Mixed",
   bible: "📖 Bible Characters",
@@ -471,8 +795,11 @@ const CATEGORY_LABELS = {
   stories: "📜 Bible Stories",
   phrases: "💬 Bible Phrases",
   funny: "😂 Funny Sounds - Bible Characters",
-  testament: "📚 Old or New Testament?"
+  testament: "📚 Old or New Testament?",
+  trivia: "🧠 Bible Trivia"
 };
+
+const ROUND_QUESTIONS_PER_TEAM = 5;
 
 let teamCount = 2;
 let isIndividual = false;
@@ -486,16 +813,43 @@ let selectedCategory = "mixed";
 let currentCard = null;
 let currentBook = null;
 let usedBooks = [];
+let currentTrivia = null;
+let triviaDeck = [];
+let triviaPointer = 0;
+let triviaTypeQueues = { mc: [], testament: [], tf: [] };
+let triviaQueuesInitialized = false;
+let roundQueue = [];
+let roundQueuePointer = 0;
+let roundQuestionCount = 0;
+let stealPending = false;
+let answeringTeamIndex = 0;
+let gameElapsedSeconds = 0;
+let gameTimer = null;
+let stopwatchStarted = false;
+let resolvedTriviaIds = new Set();
 
 function startGame(){
+  clearInterval(timer);
+  clearInterval(gameTimer);
+  stopwatchStarted = false;
+  resolvedTriviaIds = new Set();
+
   const teamsValue = document.getElementById("teams").value;
   isIndividual = teamsValue === "individual";
   teamCount = isIndividual ? 1 : parseInt(teamsValue);
   selectedCategory = document.getElementById("category").value;
   scores = Array(teamCount).fill(0);
+  team = 1;
 
   document.getElementById("start").classList.remove("show");
   document.getElementById("game").classList.add("show");
+
+  if(isTriviaTeamRoundMode()){
+    refillTypeQueues();
+    roundQueue = [];
+    roundQueuePointer = 0;
+    startGameStopwatch();
+  }
 
   startRound();
 }
@@ -507,30 +861,67 @@ function getCards(){
 }
 
 function startRound(){
-  time = 60;
-  score = 0;
   used = [];
   usedBooks = [];
+  roundQuestionCount = 0;
+  stealPending = false;
+  answeringTeamIndex = team - 1;
 
   updateTeamDisplay();
   updateModeUI();
 
-  nextCard();
-
-  resumeTimer();
+  if(isTriviaTeamRoundMode()){
+    nextCard();
+  } else {
+    time = 60;
+    score = 0;
+    nextCard();
+    resumeTimer();
+  }
 }
 
 function isTestamentMode(){
   return selectedCategory === "testament";
 }
 
+function isTriviaMode(){
+  return selectedCategory === "trivia";
+}
+
+function isTriviaTeamRoundMode(){
+  return selectedCategory === "trivia" && !isIndividual;
+}
+
 function updateModeUI(){
   const testament = isTestamentMode();
-  document.getElementById("emojiCenter").style.display = testament ? "none" : "flex";
+  const trivia = isTriviaMode();
+  const emoji = !testament && !trivia;
+  document.getElementById("emojiCenter").style.display = emoji ? "flex" : "none";
   document.getElementById("testamentCenter").style.display = testament ? "flex" : "none";
-  document.getElementById("emojiControls").style.display = testament ? "none" : "flex";
+  document.getElementById("triviaCenter").style.display = trivia ? "flex" : "none";
+  document.getElementById("emojiControls").style.display = emoji ? "flex" : "none";
   document.getElementById("testamentControls").style.display = testament ? "flex" : "none";
+  document.getElementById("triviaControls").style.display = trivia ? "flex" : "none";
   document.getElementById("categoryDisplay").innerText = CATEGORY_LABELS[selectedCategory] || "";
+  document.getElementById("triviaRoundBanner").style.display = isTriviaTeamRoundMode() ? "block" : "none";
+
+  const teamMode = isTriviaTeamRoundMode();
+  document.getElementById("soloScoreWrap").style.display = teamMode ? "none" : "";
+  document.getElementById("teamInfo").style.display = teamMode ? "none" : "";
+  updateTeamScoreboard();
+}
+
+function updateTeamScoreboard(){
+  const el = document.getElementById("teamScoreboard");
+  if(!isTriviaTeamRoundMode()){
+    el.style.display = "none";
+    return;
+  }
+  el.style.display = "flex";
+  el.innerHTML = scores.map((s, i) => {
+    const cls = i === answeringTeamIndex ? "ts-current" : "";
+    return "<span class=\"" + cls + "\">T" + (i + 1) + " " + (s || 0) + "</span>";
+  }).join("");
 }
 
 function resumeTimer(){
@@ -542,6 +933,31 @@ function resumeTimer(){
   },1000);
 }
 
+function startGameStopwatch(){
+  gameElapsedSeconds = 0;
+  stopwatchStarted = true;
+  updateElapsedDisplay();
+  clearInterval(gameTimer);
+  gameTimer = setInterval(()=>{
+    gameElapsedSeconds++;
+    updateElapsedDisplay();
+  },1000);
+}
+
+function resumeGameStopwatch(){
+  clearInterval(gameTimer);
+  gameTimer = setInterval(()=>{
+    gameElapsedSeconds++;
+    updateElapsedDisplay();
+  },1000);
+}
+
+function updateElapsedDisplay(){
+  const mm = Math.floor(gameElapsedSeconds / 60).toString().padStart(2,"0");
+  const ss = (gameElapsedSeconds % 60).toString().padStart(2,"0");
+  document.getElementById("time").innerText = mm + ":" + ss;
+}
+
 function updateTeamDisplay(){
   const el = document.getElementById("teamInfo");
   el.innerHTML = isIndividual ? "🙋 You" : ("🏆 T" + team);
@@ -549,6 +965,7 @@ function updateTeamDisplay(){
 
 function openCategoryModal(){
   clearInterval(timer);
+  clearInterval(gameTimer);
   document.getElementById("inGameCategory").value = selectedCategory;
   document.getElementById("categoryModal").classList.add("show");
 }
@@ -557,20 +974,64 @@ function applyCategoryChange(){
   selectedCategory = document.getElementById("inGameCategory").value;
   used = [];
   usedBooks = [];
+  roundQuestionCount = 0;
+  stealPending = false;
+  answeringTeamIndex = team - 1;
   document.getElementById("categoryModal").classList.remove("show");
   updateModeUI();
+
+  if(isTriviaTeamRoundMode() && !triviaQueuesInitialized){
+    refillTypeQueues();
+    roundQueue = [];
+    roundQueuePointer = 0;
+  }
+
   nextCard();
-  resumeTimer();
+
+  if(isTriviaTeamRoundMode()){
+    if(!stopwatchStarted){ startGameStopwatch(); } else { resumeGameStopwatch(); }
+  } else {
+    time = 60;
+    resumeTimer();
+  }
 }
 
 function cancelCategoryChange(){
   document.getElementById("categoryModal").classList.remove("show");
-  resumeTimer();
+  if(isTriviaTeamRoundMode()){
+    resumeGameStopwatch();
+  } else {
+    resumeTimer();
+  }
+}
+
+function openPauseModal(){
+  clearInterval(timer);
+  clearInterval(gameTimer);
+  const summary = document.getElementById("pauseSummary");
+  summary.innerText = isTriviaTeamRoundMode()
+    ? "Elapsed time: " + document.getElementById("time").innerText
+    : "Time left: " + time + "s";
+  document.getElementById("pauseModal").classList.add("show");
+}
+
+function resumeGame(){
+  document.getElementById("pauseModal").classList.remove("show");
+  if(isTriviaTeamRoundMode()){
+    resumeGameStopwatch();
+  } else {
+    resumeTimer();
+  }
 }
 
 function nextCard(){
   if(isTestamentMode()){
     nextBook();
+    return;
+  }
+
+  if(isTriviaMode()){
+    nextTrivia();
     return;
   }
 
@@ -631,6 +1092,296 @@ function answerTestament(choice){
   setTimeout(nextBook, 800);
 }
 
+function shuffleArray(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random() * (i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+// Some questions must be asked before a related one is fair game (e.g.
+// "Who was never resurrected?" requires "someone was raised before Jesus"
+// to have already come up). Moving that prerequisite to the front of its
+// shuffled queue guarantees it's always the first of its type drawn, so
+// the dependent question is virtually always already unlocked by the time
+// its own turn comes up.
+function pinPredecessorsFirst(arr){
+  const requiredIds = new Set(TRIVIA.filter(t => t.requires).map(t => t.requires));
+  if(requiredIds.size === 0) return arr;
+  const pinned = [];
+  const rest = [];
+  arr.forEach(t => {
+    if(t.id && requiredIds.has(t.id)) pinned.push(t); else rest.push(t);
+  });
+  return pinned.concat(rest);
+}
+
+function refillTriviaDeck(){
+  triviaDeck = pinPredecessorsFirst(shuffleArray(TRIVIA));
+  triviaPointer = 0;
+}
+
+function classifyTrivia(t){
+  if(t.header === "Old or New Testament?") return "testament";
+  if(t.header === "True or False?") return "tf";
+  return "mc";
+}
+
+function refillTypeQueues(){
+  const buckets = { mc: [], testament: [], tf: [] };
+  TRIVIA.forEach(t => buckets[classifyTrivia(t)].push(t));
+  triviaTypeQueues = {
+    mc: pinPredecessorsFirst(shuffleArray(buckets.mc)),
+    testament: pinPredecessorsFirst(shuffleArray(buckets.testament)),
+    tf: pinPredecessorsFirst(shuffleArray(buckets.tf))
+  };
+  triviaQueuesInitialized = true;
+}
+
+function totalTriviaRemaining(){
+  const inRound = Math.max(roundQueue.length - roundQueuePointer, 0);
+  return inRound + triviaTypeQueues.mc.length + triviaTypeQueues.testament.length + triviaTypeQueues.tf.length;
+}
+
+function topicsOf(t){
+  return t.topics || [];
+}
+
+function sharesTopic(t, usedTopics){
+  return topicsOf(t).some(top => usedTopics.has(top));
+}
+
+// Some questions are only fair to ask after a related one has already come
+// up (e.g. "Who was never resurrected?" should only appear once the
+// "someone was raised before Jesus" question has already been asked).
+function isTriviaAvailable(t){
+  return !t.requires || resolvedTriviaIds.has(t.requires);
+}
+
+function markTriviaResolved(t){
+  if(t && t.id) resolvedTriviaIds.add(t.id);
+}
+
+// Pulls a question from the given type queue, preferring one that's both
+// available (its prerequisite, if any, has already been asked) and whose
+// topic doesn't overlap with what's already in the round (e.g. avoids
+// pairing "Who challenged the prophets of Baal?" with "True/False: Elijah
+// challenged the prophets of Baal" in the same round). Falls back in
+// stages so the round never stalls waiting on a constraint.
+function takeNonConflicting(type, usedTopics){
+  const queue = triviaTypeQueues[type];
+  for(let i = 0; i < queue.length; i++){
+    if(isTriviaAvailable(queue[i]) && !sharesTopic(queue[i], usedTopics)){
+      return queue.splice(i, 1)[0];
+    }
+  }
+  for(let i = 0; i < queue.length; i++){
+    if(isTriviaAvailable(queue[i])){
+      return queue.splice(i, 1)[0];
+    }
+  }
+  return queue.shift();
+}
+
+function buildRoundQueue(){
+  if(!triviaQueuesInitialized) refillTypeQueues();
+
+  const remaining = totalTriviaRemaining();
+  const roundSize = Math.min(ROUND_QUESTIONS_PER_TEAM, remaining);
+  const picks = [];
+  const usedTopics = new Set();
+  const types = ["tf", "testament", "mc"];
+
+  function addPick(t){
+    picks.push(t);
+    topicsOf(t).forEach(top => usedTopics.add(top));
+  }
+
+  // Guarantee one of each type first, if available.
+  types.forEach(type => {
+    if(picks.length < roundSize && triviaTypeQueues[type].length > 0){
+      addPick(takeNonConflicting(type, usedTopics));
+    }
+  });
+
+  // Fill any remaining slots randomly from whichever type queues still have items.
+  while(picks.length < roundSize){
+    const available = types.filter(type => triviaTypeQueues[type].length > 0);
+    if(available.length === 0) break;
+    const pick = available[Math.floor(Math.random() * available.length)];
+    addPick(takeNonConflicting(pick, usedTopics));
+  }
+
+  roundQueue = shuffleArray(picks);
+  roundQueuePointer = 0;
+}
+
+function nextTrivia(){
+  if(isTriviaTeamRoundMode()){
+    if(roundQueuePointer >= roundQueue.length){
+      buildRoundQueue();
+    }
+    currentTrivia = roundQueue[roundQueuePointer++];
+  } else {
+    if(triviaDeck.length === 0 || triviaPointer >= triviaDeck.length){
+      refillTriviaDeck();
+    }
+    // Skip forward (without breaking the no-repeat shuffle) to the next
+    // question whose prerequisite, if any, has already been asked.
+    let idx = triviaPointer;
+    while(idx < triviaDeck.length - 1 && !isTriviaAvailable(triviaDeck[idx])){
+      idx++;
+    }
+    if(!isTriviaAvailable(triviaDeck[idx])) idx = triviaPointer;
+    [triviaDeck[triviaPointer], triviaDeck[idx]] = [triviaDeck[idx], triviaDeck[triviaPointer]];
+    currentTrivia = triviaDeck[triviaPointer++];
+  }
+
+  markTriviaResolved(currentTrivia);
+
+  const headerEl = document.getElementById("quizHeader");
+  const nameEl = document.getElementById("quizName");
+  const detailEl = document.getElementById("quizDetail");
+
+  nameEl.classList.toggle("quiz-statement", currentTrivia.header === "True or False?");
+
+  if(currentTrivia.header){
+    headerEl.innerText = currentTrivia.header;
+    headerEl.style.display = "block";
+    nameEl.innerText = currentTrivia.name;
+    if(currentTrivia.detail){
+      detailEl.innerText = currentTrivia.detail;
+      detailEl.style.display = "block";
+    } else {
+      detailEl.innerText = "";
+      detailEl.style.display = "none";
+    }
+  } else {
+    headerEl.style.display = "none";
+    nameEl.innerText = currentTrivia.q;
+    detailEl.style.display = "none";
+  }
+
+  document.getElementById("triviaFeedback").innerText = "";
+
+  for(let idx = 0; idx < 4; idx++){
+    const btn = document.getElementById("opt" + idx);
+    if(idx < currentTrivia.options.length){
+      btn.innerText = currentTrivia.options[idx];
+      btn.style.display = "flex";
+    } else {
+      btn.innerText = "";
+      btn.style.display = "none";
+    }
+  }
+  document.getElementById("optRow2").style.display = currentTrivia.options.length > 2 ? "flex" : "none";
+
+  if(isTriviaTeamRoundMode()){
+    stealPending = false;
+    answeringTeamIndex = team - 1;
+    updateRoundInfo();
+    updateScoreDisplay();
+  }
+}
+
+function answerTrivia(choice){
+  if(!currentTrivia) return;
+
+  if(isTriviaTeamRoundMode()){
+    answerTriviaTeamMode(choice);
+    return;
+  }
+
+  const feedback = document.getElementById("triviaFeedback");
+
+  if(choice === currentTrivia.a){
+    score++;
+    scores[team-1] = score;
+    document.getElementById("score").innerText = score;
+    feedback.innerText = "✅ Correct!";
+    feedback.style.color = "#00c853";
+  } else {
+    feedback.innerText = revealText(currentTrivia);
+    feedback.style.color = "#e53935";
+  }
+
+  setTimeout(nextTrivia, 900);
+}
+
+function revealText(trivia){
+  const answerLabel = trivia.options[trivia.a];
+  return trivia.explanation
+    ? "❌ Wrong — it's " + answerLabel + " (" + trivia.explanation + ")"
+    : "❌ Wrong — it's " + answerLabel;
+}
+
+function answerTriviaTeamMode(choice){
+  const feedback = document.getElementById("triviaFeedback");
+  const correct = choice === currentTrivia.a;
+  const answeringIdx = answeringTeamIndex;
+
+  if(correct){
+    scores[answeringIdx] = (scores[answeringIdx] || 0) + 1;
+    updateScoreDisplay();
+    feedback.innerText = "✅ Correct! Team " + (answeringIdx + 1) + " scores!";
+    feedback.style.color = "#00c853";
+    advanceAfterAnswer();
+  } else if(!stealPending && teamCount > 1){
+    stealPending = true;
+    answeringTeamIndex = team % teamCount;
+    feedback.innerText = "❌ Wrong! Team " + (answeringTeamIndex + 1) + " can steal!";
+    feedback.style.color = "#ffca28";
+    updateRoundInfo();
+    updateScoreDisplay();
+  } else {
+    feedback.innerText = revealText(currentTrivia);
+    feedback.style.color = "#e53935";
+    advanceAfterAnswer();
+  }
+}
+
+function advanceAfterAnswer(){
+  roundQuestionCount++;
+
+  if(isTriviaTeamRoundMode() && totalTriviaRemaining() === 0){
+    // Every question in the question bank has now been asked — game over.
+    setTimeout(showResults, 1100);
+    return;
+  }
+
+  if(roundQueuePointer >= roundQueue.length){
+    setTimeout(endRound, 1100);
+  } else {
+    setTimeout(nextTrivia, 1100);
+  }
+}
+
+function updateRoundInfo(){
+  if(!isTriviaTeamRoundMode()) return;
+
+  document.getElementById("roundOwnerLabel").innerText = "🏆 Team " + team + "'s Round";
+
+  const answeringEl = document.getElementById("answeringLabel");
+  if(answeringTeamIndex === team - 1){
+    answeringEl.innerText = "▶ Team " + team + " Answering";
+    answeringEl.classList.remove("steal");
+  } else {
+    answeringEl.innerText = "🔁 STEAL! Team " + (answeringTeamIndex + 1) + " Answering";
+    answeringEl.classList.add("steal");
+  }
+
+  document.getElementById("questionProgress").innerText =
+    "Question " + Math.min(roundQuestionCount + 1, roundQueue.length) + " of " + roundQueue.length;
+}
+
+function updateScoreDisplay(){
+  if(!isTriviaTeamRoundMode()) return;
+  document.getElementById("score").innerText = scores[answeringTeamIndex] || 0;
+  updateTeamScoreboard();
+}
+
 function revealAnswer(){
   if(!currentCard) return;
 
@@ -650,15 +1401,33 @@ function skip(){
 
 function endGame(){
   clearInterval(timer);
+  clearInterval(gameTimer);
   showResults();
 }
 
 function endRound(){
   clearInterval(timer);
 
+  if(isTriviaTeamRoundMode()){
+    // Deck exhaustion is already handled in advanceAfterAnswer() before this
+    // is ever called, so getting here always means there are more questions
+    // left — keep cycling through teams instead of stopping after one pass.
+    const finishedTeam = team;
+    team = (team % teamCount) + 1;
+    document.getElementById("nextTeam").innerText = team;
+
+    const recap = document.getElementById("betweenRecap");
+    recap.innerText = "Score so far — Team " + finishedTeam + ": " + (scores[finishedTeam - 1] || 0) + " point(s).";
+
+    document.getElementById("game").classList.remove("show");
+    document.getElementById("between").classList.add("show");
+    return;
+  }
+
   if(team < teamCount){
     team++;
     document.getElementById("nextTeam").innerText = team;
+    document.getElementById("betweenRecap").innerText = "";
     document.getElementById("game").classList.remove("show");
     document.getElementById("between").classList.add("show");
   } else {
@@ -673,6 +1442,9 @@ function nextTeam(){
 }
 
 function showResults(){
+  clearInterval(timer);
+  clearInterval(gameTimer);
+
   document.getElementById("game").classList.remove("show");
   document.getElementById("between").classList.remove("show");
   document.getElementById("end").classList.add("show");
